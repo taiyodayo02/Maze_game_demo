@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ピクセル めいろゲーム</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 10px;
+            font-family: 'Press Start 2P', monospace;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+        
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            background: #0f0f23;
+            border: 3px solid #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .title {
+            font-size: 18px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #006600;
+        }
+        
+        .button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0 #cc4125;
+            touch-action: manipulation;
+        }
+        
+        .button:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #cc4125;
+        }
+        
+        .button:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+        
+        .stage-button {
+            background: linear-gradient(45deg, #4834d4, #686de0);
+            box-shadow: 0 4px 0 #3742fa;
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 9px;
+        }
+        
+        .stage-button:hover {
+            box-shadow: 0 2px 0 #3742fa;
+        }
+        
+        .stage-button:disabled {
+            background: #666;
+            box-shadow: 0 4px 0 #333;
+            opacity: 0.5;
+        }
+        
+        .stage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .character-select-container {
+            margin: 20px 0;
+        }
+        
+        .character-select {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .character-select::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .character-button {
+            background: linear-gradient(45deg, #00d2d3, #54a0ff);
+            box-shadow: 0 4px 0 #2f3542;
+            font-size: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+            min-height: 120px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border-radius: 8px;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .character-button.selected {
+            background: linear-gradient(45deg, #ffa502, #ff6348);
+            box-shadow: 0 4px 0 #ff4757;
+            transform: scale(1.05);
+        }
+        
+        .character-button:disabled {
+            opacity: 0.5;
+            transform: none;
+        }
+
+        .character-image {
+            width: 60px;
+            height: 60px;
+            background: #ffffff;
+            border: 2px solid #2f3542;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            image-rendering: pixelated;
+        }
+
+        .character-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .character-name {
+            font-size: 8px;
+            text-align: center;
+            line-height: 1.2;
+            color: #ffffff;
+            text-shadow: 1px 1px 0px #000000;
+        }
+        
+        .difficulty-select {
+            margin: 15px 0;
+        }
+        
+        .difficulty-button {
+            background: linear-gradient(45deg, #5f27cd, #a55eea);
+            font-size: 9px;
+            padding: 8px 15px;
+            margin: 4px;
+        }
+        
+        .difficulty-button.selected {
+            background: linear-gradient(45deg, #00d2d3, #54a0ff);
+        }
+        
+        .game-canvas {
+            border: 2px solid #00ff00;
+            background: #1a1a2e;
+            margin: 15px 0;
+            image-rendering: pixelated;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 8px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .inventory {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .inventory-item {
+            width: 35px;
+            height: 35px;
+            background: #2f3542;
+            border: 2px solid #57606f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        
+        .inventory-item.has-item {
+            background: #ffa502;
+            border-color: #ff9ff3;
+        }
+        
+        .controls {
+            margin: 10px 0;
+            font-size: 7px;
+            color: #a4b0be;
+            line-height: 1.3;
+        }
+        
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #0984e3, #74b9ff);
+            border: 4px solid #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            max-width: 280px;
+            display: none;
+        }
+        
+        .popup.show {
+            display: block;
+            animation: popupBounce 0.5s ease-out;
+        }
+        
+        @keyframes popupBounce {
+            0% { transform: translate(-50%, -50%) scale(0.3); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .popup-title {
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0px #0984e3;
+        }
+        
+        .popup-message {
+            font-size: 10px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .popup-button {
+            background: linear-gradient(45deg, #00b894, #55efc4);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 9px;
+            cursor: pointer;
+            border-radius: 6px;
+            box-shadow: 0 4px 0 #00a085;
+            touch-action: manipulation;
+        }
+        
+        .popup-button:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #00a085;
+        }
+        
+        .scroll-hint {
+            font-size: 7px;
+            color: #a4b0be;
+            margin-top: 5px;
+        }
+        
+        /* スマホ専用スタイル */
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+            
+            .game-container {
+                max-width: 100%;
+                padding: 10px;
+                border-width: 2px;
+            }
+            
+            .title {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .game-canvas {
+                width: 100%;
+                max-width: 350px;
+                height: auto;
+            }
+            
+            .character-button {
+                min-width: 80px;
+                min-height: 100px;
+            }
+            
+            .character-image {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- タイトル画面 -->
+        <div id="title-screen" class="screen active">
+            <div class="title">🏰 ピクセル めいろゲーム 🏰</div>
+            <div style="margin: 20px 0; font-size: 10px; line-height: 1.4;">
+                めいろをクリアして<br>
+                つよい敵を倒そう！
+            </div>
+            <button class="button" onclick="showStageSelect()">ゲームスタート</button>
+        </div>
+        
+        <!-- ステージ選択画面 -->
+        <div id="stage-select" class="screen">
+            <div class="title">ステージせんたく</div>
+            <div class="stage-grid">
+                <button class="stage-button button" onclick="showCharacterSelect(1)">ステージ 1</button>
+                <button class="stage-button button" onclick="showCharacterSelect(2)" disabled>ステージ 2</button>
+                <button class="stage-button button" onclick="showCharacterSelect(3)" disabled>ステージ 3</button>
+                <button class="stage-button button" onclick="showCharacterSelect(4)" disabled>ステージ 4</button>
+                <button class="stage-button button" onclick="showCharacterSelect(5)" disabled>ステージ 5</button>
+                <button class="stage-button button" onclick="showCharacterSelect(6)" disabled>ステージ 6</button>
+                <button class="stage-button button" onclick="showCharacterSelect(7)" disabled>ステージ 7</button>
+                <button class="stage-button button" onclick="showCharacterSelect(8)" disabled>ステージ 8</button>
+                <button class="stage-button button" onclick="showCharacterSelect(9)" disabled>ステージ 9</button>
+                <button class="stage-button button" onclick="showCharacterSelect(10)" disabled>ステージ 10</button>
+                <button class="stage-button button" onclick="showCharacterSelect(11)" disabled>ステージ 11</button>
+                <button class="stage-button button" onclick="showCharacterSelect(12)" disabled>ステージ 12</button>
+            </div>
+            <button class="button" onclick="showTitle()">もどる</button>
+        </div>
+        
+        <!-- キャラクター・難易度選択画面 -->
+        <div id="character-select" class="screen">
+            <div class="title">キャラクター & なんいど</div>
+            <div style="font-size: 9px; margin-bottom: 10px;">キャラクターをえらぼう！</div>
+            <div class="character-select-container">
+                <div class="character-select">
+                    <button class="character-button button selected" data-character="たいよう">
+                        <div class="character-image" id="char-img-たいよう">☀️</div>
+                        <div class="character-name">たいよう</div>
+                    </button>
+                    <button class="character-button button" data-character="あきら">
+                        <div class="character-image" id="char-img-あきら">⭐</div>
+                        <div class="character-name">あきら</div>
+                    </button>
+                    <button class="character-button button" data-character="あるま">
+                        <div class="character-image" id="char-img-あるま">🌸</div>
+                        <div class="character-name">あるま</div>
+                    </button>
+                    <button class="character-button button" data-character="いおり">
+                        <div class="character-image" id="char-img-いおり">🌺</div>
+                        <div class="character-name">いおり</div>
+                    </button>
+                    <button class="character-button button" data-character="しゅうご">
+                        <div class="character-image" id="char-img-しゅうご">🌊</div>
+                        <div class="character-name">しゅうご</div>
+                    </button>
+                    <button class="character-button button" data-character="まほ">
+                        <div class="character-image" id="char-img-まほ">🌙</div>
+                        <div class="character-name">まほ</div>
+                    </button>
+                    <button class="character-button button" data-character="しづき">
+                        <div class="character-image" id="char-img-しづき">🍀</div>
+                        <div class="character-name">しづき</div>
+                    </button>
+                    <button class="character-button button" data-character="あさひ">
+                        <div class="character-image" id="char-img-あさひ">🌅</div>
+                        <div class="character-name">あさひ</div>
+                    </button>
+                    <button class="character-button button" data-character="しゅん">
+                        <div class="character-image" id="char-img-しゅん">🎋</div>
+                        <div class="character-name">しゅん</div>
+                    </button>
+                    <button class="character-button button" data-character="あつこ">
+                        <div class="character-image" id="char-img-あつこ">🌻</div>
+                        <div class="character-name">あつこ</div>
+                    </button>
+                </div>
+                <div class="scroll-hint">← スワイプしてキャラクターを選択 →</div>
+            </div>
+            
+            <div style="font-size: 9px; margin: 15px 0 10px 0;">なんいどをえらぼう！</div>
+            <div class="difficulty-select">
+                <button class="difficulty-button button selected" data-difficulty="easy">かんたん</button>
+                <button class="difficulty-button button" data-difficulty="normal">ふつう</button>
+                <button class="difficulty-button button" data-difficulty="hard">むずかしい</button>
+                <button class="difficulty-button button" data-difficulty="extreme">ヤバイ</button>
+            </div>
+            
+            <button class="button" onclick="startGame()">ゲームかいし！</button>
+            <button class="button" onclick="showStageSelect()">もどる</button>
+        </div>
+        
+        <!-- ゲーム画面 -->
+        <div id="game-screen" class="screen">
+            <div class="game-info">
+                <div>キャラ: <span id="current-character">たいよう</span></div>
+                <div>ステージ: <span id="current-stage">1</span></div>
+                <div>難易度: <span id="current-difficulty">かんたん</span></div>
+            </div>
+            
+            <canvas id="game-canvas" class="game-canvas" width="350" height="350"></canvas>
+            
+            <div class="inventory">
+                <div class="inventory-item" id="weapon-slot">🗡️</div>
+            </div>
+            
+            <div class="controls">
+                スマホ：画面をスワイプして移動<br>
+                PC：矢印キーで移動
+            </div>
+            
+            <button class="button" onclick="showStageSelect()">ステージせんたくに戻る</button>
+        </div>
+        
+        <!-- クリア画面 -->
+        <div id="clear-screen" class="screen">
+            <div class="title">🎉 ステージクリア！ 🎉</div>
+            <div id="clear-message" style="margin: 20px 0; font-size: 10px;"></div>
+            <div id="new-character" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
+            <button class="button" onclick="showStageSelect()">つぎのステージへ</button>
+        </div>
+        
+        <!-- ゲームオーバー画面 -->
+        <div id="gameover-screen" class="screen">
+            <div class="title" style="color: #e74c3c;">💀 ゲームオーバー 💀</div>
+            <div style="margin: 20px 0; font-size: 10px; color: #e74c3c; line-height: 1.4;">
+                敵にやられてしまった...<br>
+                武器を集めてリベンジしよう！
+            </div>
+            <button class="button" onclick="restartGame()">もういちど</button>
+            <button class="button" onclick="showStageSelect()">ステージせんたくに戻る</button>
+        </div>
+        
+        <!-- ポップアップ -->
+        <div id="popup" class="popup">
+            <div class="popup-title" id="popup-title">🎉</div>
+            <div class="popup-message" id="popup-message"></div>
+            <button class="popup-button" onclick="closePopup()">OK!</button>
+        </div>
+    </div>
+
+    <script>
+        // ゲーム状態
+        let gameState = {
+            currentStage: 1,
+            selectedCharacter: 'たいよう',
+            selectedDifficulty: 'easy',
+            unlockedCharacters: ['たいよう'],
+            clearedStages: [],
+            weaponCount: 0,
+            treasureCount: 0
+        };
+
+        // 画像データ
+        const gameImages = {
+            characters: {
+                'たいよう': null,
+                'あきら': null,
+                'あるま': null,
+                'いおり': null,
+                'しゅうご': null,
+                'まほ': null,
+                'しづき': null,
+                'あさひ': null,
+                'しゅん': null,
+                'あつこ': null
+            },
+            characterSelect: {
+                'たいよう': null,
+                'あきら': null,
+                'あるま': null,
+                'いおり': null,
+                'しゅうご': null,
+                'まほ': null,
+                'しづき': null,
+                'あさひ': null,
+                'しゅん': null,
+                'あつこ': null
+            },
+            weapons: {
+                sword: null,
+                bow: null,
+                staff: null
+            },
+            enemies: {
+                ghost: null,
+                zombie: null,
+                dragon: null
+            },
+            items: {
+                treasure: null,
+                friend: null
+            }
+        };
+
+        // 読み込み済み画像を保存するオブジェクト
+        const loadedImages = {};
+
+        // 画像設定関数（ゲーム内用とキャラ選択用を分離）
+        function setCharacterImage(characterName, gameImagePath, selectImagePath = null) {
+            gameImages.characters[characterName] = gameImagePath;
+            
+            // キャラクター選択画面用の画像
+            const displayImagePath = selectImagePath || gameImagePath;
+            gameImages.characterSelect[characterName] = displayImagePath;
+            
+            const imgElement = document.getElementById(`char-img-${characterName}`);
+            if (imgElement && displayImagePath) {
+                imgElement.innerHTML = `<img src="${displayImagePath}" alt="${characterName}">`;
+            }
+            
+            // ゲーム内用の画像を事前読み込み
+            if (gameImagePath && !loadedImages[gameImagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[gameImagePath] = img;
+                    console.log('✅ キャラクター画像読み込み完了:', characterName);
+                };
+                img.onerror = function() {
+                    console.log('❌ キャラクター画像読み込み失敗:', gameImagePath);
+                };
+                img.src = gameImagePath;
+            }
+            
+            // 選択画面用の画像も事前読み込み（別画像の場合）
+            if (selectImagePath && selectImagePath !== gameImagePath && !loadedImages[selectImagePath]) {
+                const selectImg = new Image();
+                selectImg.onload = function() {
+                    loadedImages[selectImagePath] = selectImg;
+                    console.log('✅ 選択画面用画像読み込み完了:', characterName);
+                };
+                selectImg.onerror = function() {
+                    console.log('❌ 選択画面用画像読み込み失敗:', selectImagePath);
+                };
+                selectImg.src = selectImagePath;
+            }
+        }
+
+        function setWeaponImage(weaponType, imagePath) {
+            gameImages.weapons[weaponType] = imagePath;
+        }
+
+        function setEnemyImage(enemyType, imagePath) {
+            gameImages.enemies[enemyType] = imagePath;
+            
+            if (!loadedImages[imagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[imagePath] = img;
+                    console.log('✅ 敵画像読み込み完了:', enemyType);
+                };
+                img.onerror = function() {
+                    console.log('❌ 敵画像読み込み失敗:', imagePath);
+                };
+                img.src = imagePath;
+            }
+        }
+
+        function setItemImage(itemType, imagePath) {
+            gameImages.items[itemType] = imagePath;
+            
+            if (!loadedImages[imagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[imagePath] = img;
+                    console.log('✅ アイテム画像読み込み完了:', itemType);
+                };
+                img.onerror = function() {
+                    console.log('❌ アイテム画像読み込み失敗:', imagePath);
+                };
+                img.src = imagePath;
+            }
+        }
+
+        // ローカルストレージ
+        function loadGameData() {
+            const saved = localStorage.getItem('mazeGameSave');
+            if (saved) {
+                gameState = { ...gameState, ...JSON.parse(saved) };
+            }
+        }
+
+        function saveGameData() {
+            localStorage.setItem('mazeGameSave', JSON.stringify(gameState));
+        }
+
+        // 画面遷移
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showTitle() {
+            showScreen('title-screen');
+        }
+
+        function showStageSelect() {
+            showScreen('stage-select');
+            updateStageButtons();
+        }
+
+        function showCharacterSelect(stage) {
+            gameState.currentStage = stage;
+            document.getElementById('current-stage').textContent = stage;
+            showScreen('character-select');
+        }
+
+        // ステージボタンの更新
+        function updateStageButtons() {
+            const stageButtons = document.querySelectorAll('.stage-button');
+            stageButtons.forEach((button, index) => {
+                const stageNumber = index + 1;
+                if (stageNumber === 1 || gameState.clearedStages.includes(stageNumber - 1)) {
+                    button.disabled = false;
+                } else {
+                    button.disabled = true;
+                }
+            });
+        }
+
+        // キャラクター選択
+        document.querySelectorAll('.character-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const character = this.dataset.character;
+                if (gameState.unlockedCharacters.includes(character)) {
+                    document.querySelectorAll('.character-button').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.selectedCharacter = character;
+                } else {
+                    alert('このキャラクターはまだアンロックされていません！');
+                }
+            });
+        });
+
+        // 難易度選択
+        document.querySelectorAll('.difficulty-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.difficulty-button').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                gameState.selectedDifficulty = this.dataset.difficulty;
+            });
+        });
+
+        // ゲーム開始
+        function startGame() {
+            document.getElementById('current-character').textContent = gameState.selectedCharacter;
+            document.getElementById('current-stage').textContent = gameState.currentStage;
+            document.getElementById('current-difficulty').textContent = 
+                document.querySelector('.difficulty-button.selected').textContent;
+            
+            showScreen('game-screen');
+            initializeGame();
+        }
+
+        // ゲーム初期化
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let player = { x: 1, y: 1 };
+        let friend = { x: 18, y: 18 };
+        let treasures = [];
+        let movingEnemies = [];
+        let gameRunning = false;
+        let lastEnemyMove = 0;
+
+        // 迷路データ
+        const maze = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+            [1,0,1,0,1,0,1,1,0,1,0,1,1,0,1,0,1,1,0,1],
+            [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+            [1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,1],
+            [1,1,1,0,1,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
+            [1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,0,1],
+            [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1],
+            [1,1,0,1,1,1,1,0,1,1,1,1,0,1,0,1,0,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+
+        function initializeGame() {
+            player = { x: 1, y: 1 };
+            friend = { x: 18, y: 18 };
+            
+            // 難易度による敵の数
+            let enemyCount;
+            switch(gameState.selectedDifficulty) {
+                case 'easy': enemyCount = 3; break;
+                case 'normal': enemyCount = 4; break;
+                case 'hard': enemyCount = 5; break;
+                case 'extreme': enemyCount = 6; break;
+                default: enemyCount = 3;
+            }
+            
+            // 敵の配置
+            movingEnemies = [];
+            const enemyPositions = [
+                { x: 7, y: 7, dx: 1, dy: 0 },
+                { x: 15, y: 10, dx: 0, dy: 1 },
+                { x: 5, y: 15, dx: -1, dy: 0 },
+                { x: 12, y: 3, dx: 1, dy: 0 },
+                { x: 3, y: 12, dx: 0, dy: -1 },
+                { x: 17, y: 6, dx: -1, dy: 0 },
+                { x: 8, y: 16, dx: 0, dy: 1 },
+                { x: 14, y: 14, dx: 1, dy: 0 }
+            ];
+            
+            for (let i = 0; i < Math.min(enemyCount, enemyPositions.length); i++) {
+                movingEnemies.push({ ...enemyPositions[i] });
+            }
+            
+            // 宝箱の配置
+            treasures = [];
+            const treasurePositions = [
+                { x: 10, y: 5, collected: false },
+                { x: 3, y: 8, collected: false },
+                { x: 16, y: 3, collected: false },
+                { x: 6, y: 12, collected: false },
+                { x: 13, y: 7, collected: false },
+                { x: 2, y: 16, collected: false },
+                { x: 17, y: 12, collected: false },
+                { x: 9, y: 14, collected: false }
+            ];
+            
+            for (let i = 0; i < enemyCount; i++) {
+                if (treasurePositions[i]) {
+                    treasures.push({ ...treasurePositions[i] });
+                }
+            }
+            
+            gameState.weaponCount = 0;
+            gameState.treasureCount = 0;
+            gameRunning = true;
+            lastEnemyMove = Date.now();
+            updateInventory();
+            drawGame();
+            
+            moveEnemies();
+        }
+
+        function drawGame() {
+            ctx.fillStyle = '#0f0f23';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cellSize = Math.min(canvas.width / 20, canvas.height / 20);
+
+            // 迷路を描画
+            for (let y = 0; y < maze.length; y++) {
+                for (let x = 0; x < maze[y].length; x++) {
+                    if (maze[y][x] === 1) {
+                        ctx.fillStyle = '#2d3436';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.fillStyle = '#636e72';
+                        ctx.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
+                    }
+                }
+            }
+
+            // 宝箱を描画
+            treasures.forEach(treasure => {
+                if (!treasure.collected) {
+                    const treasureImagePath = gameImages.items.treasure;
+                    if (treasureImagePath && loadedImages[treasureImagePath]) {
+                        ctx.drawImage(loadedImages[treasureImagePath], treasure.x * cellSize, treasure.y * cellSize, cellSize, cellSize);
+                    } else {
+                        drawDefaultTreasure(treasure.x, treasure.y, cellSize);
+                    }
+                }
+            });
+
+            // 動く敵を描画
+            movingEnemies.forEach((enemy, index) => {
+                const enemyImagePath = gameImages.enemies.zombie;
+                if (enemyImagePath && loadedImages[enemyImagePath]) {
+                    ctx.drawImage(loadedImages[enemyImagePath], enemy.x * cellSize, enemy.y * cellSize, cellSize, cellSize);
+                } else {
+                    ctx.fillStyle = '#e84118';
+                    ctx.fillRect(enemy.x * cellSize + 2, enemy.y * cellSize + 2, cellSize - 4, cellSize - 4);
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = `${cellSize * 0.6}px monospace`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('👻', enemy.x * cellSize + cellSize/2, enemy.y * cellSize + cellSize/2 + 4);
+                }
+            });
+
+            // 友達を描画（ゴール地点）
+            if (gameImages.items.friend && loadedImages[gameImages.items.friend]) {
+                ctx.drawImage(loadedImages[gameImages.items.friend], friend.x * cellSize, friend.y * cellSize, cellSize, cellSize);
+            } else {
+                ctx.fillStyle = '#00b894';
+                ctx.fillRect(friend.x * cellSize + 2, friend.y * cellSize + 2, cellSize - 4, cellSize - 4);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `${cellSize * 0.6}px monospace`;
+                ctx.textAlign = 'center';
+                ctx.fillText('👥', friend.x * cellSize + cellSize/2, friend.y * cellSize + cellSize/2 + 4);
+            }
+
+            // プレイヤーを描画
+            const playerImagePath = gameImages.characters[gameState.selectedCharacter];
+            if (playerImagePath && loadedImages[playerImagePath]) {
+                ctx.drawImage(loadedImages[playerImagePath], player.x * cellSize, player.y * cellSize, cellSize, cellSize);
+            } else {
+                drawDefaultPlayer(cellSize);
+            }
+        }
+        
+        function drawDefaultTreasure(x, y, cellSize) {
+            ctx.fillStyle = '#fdcb6e';
+            ctx.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
+            ctx.fillStyle = '#e17055';
+            ctx.fillRect(x * cellSize + 4, y * cellSize + 4, cellSize - 8, cellSize - 8);
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${cellSize * 0.6}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillText('💰', x * cellSize + cellSize/2, y * cellSize + cellSize/2 + 4);
+        }
+        
+        function drawDefaultPlayer(cellSize) {
+            ctx.fillStyle = '#74b9ff';
+            ctx.fillRect(player.x * cellSize + 3, player.y * cellSize + 3, cellSize - 6, cellSize - 6);
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${cellSize * 0.6}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillText('😊', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2 + 4);
+        }
+
+        function movePlayer(dx, dy) {
+            if (!gameRunning) return;
+
+            const newX = player.x + dx;
+            const newY = player.y + dy;
+
+            if (maze[newY] && maze[newY][newX] !== 1) {
+                player.x = newX;
+                player.y = newY;
+
+                // 宝箱との衝突判定
+                treasures.forEach((treasure, index) => {
+                    if (!treasure.collected && player.x === treasure.x && player.y === treasure.y) {
+                        treasure.collected = true;
+                        gameState.weaponCount++;
+                        gameState.treasureCount++;
+                        updateInventory();
+                        
+                        const weapons = ['🗡️ 剣', '🏹 弓', '🔥 ファイアボール'];
+                        const randomWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+                        
+                        showPopup(`${randomWeapon}をゲット！`, `${randomWeapon}を手に入れた！<br>これで敵を倒せるよ！`);
+                    }
+                });
+
+                // 動く敵との衝突判定
+                for (let i = movingEnemies.length - 1; i >= 0; i--) {
+                    const enemy = movingEnemies[i];
+                    if (player.x === enemy.x && player.y === enemy.y) {
+                        if (gameState.weaponCount > 0) {
+                            movingEnemies.splice(i, 1);
+                            gameState.weaponCount--;
+                            updateInventory();
+                            showPopup('⚔️ 敵を倒した！', `敵をやっつけた！<br>武器が1つ減ったよ<br>残り武器：${gameState.weaponCount}個`);
+                        } else {
+                            gameRunning = false;
+                            showPopup('💀 ゲームオーバー！', '武器がないと敵にやられちゃった！<br>次はもっと気をつけよう！', () => {
+                                showGameOver();
+                            });
+                            return;
+                        }
+                        break;
+                    }
+                }
+
+                // 友達（ゴール）との衝突判定
+                if (player.x === friend.x && player.y === friend.y) {
+                    gameRunning = false;
+                    
+                    const newFriend = getRandomCharacter();
+                    if (newFriend && !gameState.unlockedCharacters.includes(newFriend)) {
+                        gameState.unlockedCharacters.push(newFriend);
+                        showPopup('🎉 友達に会えた！', `${newFriend}に会えた！やったー！<br>新しい友達をゲットしたよ！`, () => {
+                            showClearScreen(newFriend);
+                        });
+                    } else {
+                        showPopup('🎉 友達に会えた！', '友達に会えた！やったー！', () => {
+                            showClearScreen();
+                        });
+                    }
+                    
+                    gameState.clearedStages.push(gameState.currentStage);
+                    saveGameData();
+                }
+
+                drawGame();
+            }
+        }
+
+        function getRandomCharacter() {
+            const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
+                                   'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ'];
+            const locked = allCharacters.filter(char => !gameState.unlockedCharacters.includes(char));
+            return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
+        }
+
+        // 敵の移動処理
+        function moveEnemies() {
+            if (!gameRunning) return;
+            
+            let enemySpeed;
+            switch(gameState.selectedDifficulty) {
+                case 'easy': enemySpeed = 800; break;
+                case 'normal': enemySpeed = 500; break;
+                case 'hard': enemySpeed = 300; break;
+                case 'extreme': enemySpeed = 150; break;
+                default: enemySpeed = 500;
+            }
+            
+            const now = Date.now();
+            if (now - lastEnemyMove > enemySpeed) {
+                movingEnemies.forEach(enemy => {
+                    const newX = enemy.x + enemy.dx;
+                    const newY = enemy.y + enemy.dy;
+                    
+                    if (!maze[newY] || maze[newY][newX] === 1 || newX < 0 || newX >= 20 || newY < 0 || newY >= 20) {
+                        const directions = [
+                            { dx: 1, dy: 0 },
+                            { dx: -1, dy: 0 },
+                            { dx: 0, dy: 1 },
+                            { dx: 0, dy: -1 }
+                        ];
+                        const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+                        enemy.dx = randomDirection.dx;
+                        enemy.dy = randomDirection.dy;
+                    } else {
+                        enemy.x = newX;
+                        enemy.y = newY;
+                    }
+                });
+                
+                lastEnemyMove = now;
+                drawGame();
+            }
+            
+            if (gameRunning) {
+                requestAnimationFrame(moveEnemies);
+            }
+        }
+
+        // ポップアップ表示
+        function showPopup(title, message, callback = null) {
+            document.getElementById('popup-title').textContent = title;
+            document.getElementById('popup-message').innerHTML = message;
+            document.getElementById('popup').classList.add('show');
+            
+            window.popupCallback = callback;
+        }
+
+        function closePopup() {
+            document.getElementById('popup').classList.remove('show');
+            
+            if (window.popupCallback) {
+                setTimeout(window.popupCallback, 100);
+                window.popupCallback = null;
+            }
+        }
+
+        function updateInventory() {
+            const weaponSlot = document.getElementById('weapon-slot');
+            
+            if (gameState.weaponCount > 0) {
+                weaponSlot.classList.add('has-item');
+                weaponSlot.textContent = `🗡️${gameState.weaponCount}`;
+            } else {
+                weaponSlot.classList.remove('has-item');
+                weaponSlot.textContent = '🔒';
+            }
+        }
+
+        function showClearScreen(newCharacter = null) {
+            const message = document.getElementById('clear-message');
+            const newCharEl = document.getElementById('new-character');
+            
+            message.textContent = `ステージ ${gameState.currentStage} をクリアしました！`;
+            
+            if (newCharacter) {
+                newCharEl.textContent = `🎉 あたらしい友達「${newCharacter}」をゲットした！`;
+                newCharEl.style.display = 'block';
+            } else {
+                newCharEl.style.display = 'none';
+            }
+            
+            showScreen('clear-screen');
+        }
+
+        function showGameOver() {
+            showScreen('gameover-screen');
+        }
+
+        function restartGame() {
+            showScreen('game-screen');
+            initializeGame();
+        }
+
+        // アンロックされたキャラクターのボタンを更新
+        function updateCharacterButtons() {
+            document.querySelectorAll('.character-button').forEach(button => {
+                const character = button.dataset.character;
+                if (gameState.unlockedCharacters.includes(character)) {
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                } else {
+                    button.disabled = true;
+                    button.style.opacity = '0.5';
+                }
+            });
+        }
+
+        // キーボードイベント
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowUp': movePlayer(0, -1); break;
+                case 'ArrowDown': movePlayer(0, 1); break;
+                case 'ArrowLeft': movePlayer(-1, 0); break;
+                case 'ArrowRight': movePlayer(1, 0); break;
+            }
+        });
+
+        // タッチイベント（スマートフォン用）- 画面の揺れを防止
+        let touchStartX, touchStartY;
+
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            touchStartX = touch.clientX - rect.left;
+            touchStartY = touch.clientY - rect.top;
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!touchStartX || !touchStartY) return;
+
+            const touch = e.changedTouches[0];
+            const rect = canvas.getBoundingClientRect();
+            const touchEndX = touch.clientX - rect.left;
+            const touchEndY = touch.clientY - rect.top;
+
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+
+            // 最小移動距離を設定
+            const minDistance = 20;
+            if (Math.abs(dx) > minDistance || Math.abs(dy) > minDistance) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    movePlayer(dx > 0 ? 1 : -1, 0);
+                } else {
+                    movePlayer(0, dy > 0 ? 1 : -1);
+                }
+            }
+        }, { passive: false });
+
+        // 全体のタッチイベントを制御
+        document.addEventListener('touchmove', function(e) {
+            if (e.target === canvas || e.target.closest('.character-select')) {
+                return; // キャンバスとキャラクター選択のスクロールは許可
+            }
+            e.preventDefault();
+        }, { passive: false });
+
+        // ゲーム初期化時にデータを読み込み
+        loadGameData();
+
+        // 初期化
+        updateCharacterButtons();
+        updateStageButtons();
+
+        // 画像を設定
+        setItemImage('treasure', 'images/items/treasure_red_gold.png');
+        setCharacterImage('たいよう', 'images/characters/taiyou_small.png', 'images/characters/taiyou_large.png');
+        setEnemyImage('zombie', 'images/enemies/character_monster_zombie_02_green.png');
+    </script>
+</body>
+</html>
