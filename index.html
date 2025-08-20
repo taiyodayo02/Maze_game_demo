@@ -397,52 +397,9 @@
             <div class="title">キャラクター & なんいど</div>
             <div style="font-size: 9px; margin-bottom: 10px;">キャラクターをえらぼう！</div>
             <div class="character-select-container">
-                <div class="character-select">
-                    <button class="character-button button selected" data-character="たいよう">
-                        <div class="character-image" id="char-img-たいよう">☀️</div>
-                        <div class="character-name">たいよう</div>
-                    </button>
-                    <button class="character-button button" data-character="あきら">
-                        <div class="character-image" id="char-img-あきら">⭐</div>
-                        <div class="character-name">あきら</div>
-                    </button>
-                    <button class="character-button button" data-character="あるま">
-                        <div class="character-image" id="char-img-あるま">🌸</div>
-                        <div class="character-name">あるま</div>
-                    </button>
-                    <button class="character-button button" data-character="いおり">
-                        <div class="character-image" id="char-img-いおり">🌺</div>
-                        <div class="character-name">いおり</div>
-                    </button>
-                    <button class="character-button button" data-character="しゅうご">
-                        <div class="character-image" id="char-img-しゅうご">🌊</div>
-                        <div class="character-name">しゅうご</div>
-                    </button>
-                    <button class="character-button button" data-character="まほ">
-                        <div class="character-image" id="char-img-まほ">🌙</div>
-                        <div class="character-name">まほ</div>
-                    </button>
-                    <button class="character-button button" data-character="しづき">
-                        <div class="character-image" id="char-img-しづき">🍀</div>
-                        <div class="character-name">しづき</div>
-                    </button>
-                    <button class="character-button button" data-character="あさひ">
-                        <div class="character-image" id="char-img-あさひ">🌅</div>
-                        <div class="character-name">あさひ</div>
-                    </button>
-                    <button class="character-button button" data-character="しゅん">
-                        <div class="character-image" id="char-img-しゅん">🎋</div>
-                        <div class="character-name">しゅん</div>
-                    </button>
-                    <button class="character-button button" data-character="あつこ">
-                        <div class="character-image" id="char-img-あつこ">🌻</div>
-                        <div class="character-name">あつこ</div>
-                    </button>
-                    <button class="character-button button" data-character="りき">
-                        <div class="character-image" id="char-img-りき">💪</div>
-                        <div class="character-name">りき</div>
-                    </button>
-                </div>
+	<div class="character-select" id="character-select-list">
+            <!-- キャラクターボタンは動的に生成 -->
+        </div>
                 <div class="scroll-hint">← スワイプしてキャラクターを選択 →</div>
             </div>
             
@@ -451,7 +408,7 @@
                 <button class="difficulty-button button selected" data-difficulty="easy">かんたん</button>
                 <button class="difficulty-button button" data-difficulty="normal">ふつう</button>
                 <button class="difficulty-button button" data-difficulty="hard">むずかしい</button>
-                <button class="difficulty-button button" data-difficulty="extreme">ヤバイ</button>
+                <button class="difficulty-button button" data-difficulty="extreme">ヤバすぎヤバお</button>
             </div>
             
             <button class="button" onclick="startGame()">ゲームかいし！</button>
@@ -677,9 +634,10 @@
             updateStageButtons();
         }
 
-        function showCharacterSelect(stage) {
+	function showCharacterSelect(stage) {
             gameState.currentStage = stage;
             document.getElementById('current-stage').textContent = stage;
+            generateCharacterButtons(); // ランダム表示でキャラクターボタンを生成
             showScreen('character-select');
         }
 
@@ -1320,6 +1278,65 @@
                 }
 
                 drawGame();
+            }
+        }
+	// 全キャラクターリスト
+        const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
+                               'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'りき'];
+
+        // キャラクター表示用エモジ
+        const characterEmojis = {
+            'たいよう': '☀️',
+            'あきら': '⭐',
+            'あるま': '🌸',
+            'いおり': '🌺',
+            'しゅうご': '🌊',
+            'まほ': '🌙',
+            'しづき': '🍀',
+            'あさひ': '🌅',
+            'しゅん': '🎋',
+            'あつこ': '🌻',
+            'りき': '💪'
+        };
+
+        // キャラクター選択画面のランダム表示
+        function generateCharacterButtons() {
+            const characterSelectList = document.getElementById('character-select-list');
+            characterSelectList.innerHTML = '';
+            
+            // アンロックされたキャラクターのみフィルタリング
+            const unlockedChars = allCharacters.filter(char => 
+                gameState.unlockedCharacters.includes(char)
+            );
+            
+            // ランダムに並び替え
+            const shuffledChars = [...unlockedChars].sort(() => Math.random() - 0.5);
+            
+            shuffledChars.forEach((character, index) => {
+                const button = document.createElement('button');
+                button.className = 'character-button button';
+                if (index === 0) button.classList.add('selected'); // 最初のキャラを選択状態に
+                button.dataset.character = character;
+                
+                const emoji = characterEmojis[character] || '😊';
+                
+                button.innerHTML = `
+                    <div class="character-image" id="char-img-${character}">${emoji}</div>
+                    <div class="character-name">${character}</div>
+                `;
+                
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.character-button').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.selectedCharacter = character;
+                });
+                
+                characterSelectList.appendChild(button);
+            });
+            
+            // 最初のキャラクターを選択状態に設定
+            if (shuffledChars.length > 0) {
+                gameState.selectedCharacter = shuffledChars[0];
             }
         }
 function getRandomCharacter() {
