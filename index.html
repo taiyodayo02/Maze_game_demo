@@ -172,13 +172,13 @@
             border-radius: 4px;
         }
 
-        .character-name {
-            font-size: 11px;
-            text-align: center;
-            line-height: 1.2;
-            color: #ffffff;
-            text-shadow: 1px 1px 0px #000000;
-        }
+       .character-name {
+ 	   font-size: 11px;
+ 	   text-align: center;
+ 	   line-height: 1.2;
+	    color: #ffffff;
+	    text-shadow: 1px 1px 0px #000000;
+}
         
         .difficulty-select {
             margin: 15px 0;
@@ -212,8 +212,8 @@
             flex-wrap: wrap;
             gap: 5px;
         }
-        
-        .timer-display {
+
+	.timer-display {
             font-size: 10px;
             color: #ffa502;
             margin: 5px 0;
@@ -397,10 +397,53 @@
             <div class="title">キャラクター & なんいど</div>
             <div style="font-size: 9px; margin-bottom: 10px;">キャラクターをえらぼう！</div>
             <div class="character-select-container">
-                <div id="character-select-list" class="character-select">
-                    <!-- キャラクターボタンは動的に生成 -->
+                <div class="character-select">
+                    <button class="character-button button selected" data-character="たいよう">
+                        <div class="character-image" id="char-img-たいよう">☀️</div>
+                        <div class="character-name">たいよう</div>
+                    </button>
+                    <button class="character-button button" data-character="あきら">
+                        <div class="character-image" id="char-img-あきら">⭐</div>
+                        <div class="character-name">あきら</div>
+                    </button>
+                    <button class="character-button button" data-character="あるま">
+                        <div class="character-image" id="char-img-あるま">🌸</div>
+                        <div class="character-name">あるま</div>
+                    </button>
+                    <button class="character-button button" data-character="いおり">
+                        <div class="character-image" id="char-img-いおり">🌺</div>
+                        <div class="character-name">いおり</div>
+                    </button>
+                    <button class="character-button button" data-character="しゅうご">
+                        <div class="character-image" id="char-img-しゅうご">🌊</div>
+                        <div class="character-name">しゅうご</div>
+                    </button>
+                    <button class="character-button button" data-character="まほ">
+                        <div class="character-image" id="char-img-まほ">🌙</div>
+                        <div class="character-name">まほ</div>
+                    </button>
+                    <button class="character-button button" data-character="しづき">
+                        <div class="character-image" id="char-img-しづき">🍀</div>
+                        <div class="character-name">しづき</div>
+                    </button>
+                    <button class="character-button button" data-character="あさひ">
+                        <div class="character-image" id="char-img-あさひ">🌅</div>
+                        <div class="character-name">あさひ</div>
+                    </button>
+                    <button class="character-button button" data-character="しゅん">
+                        <div class="character-image" id="char-img-しゅん">🎋</div>
+                        <div class="character-name">しゅん</div>
+                    </button>
+                    <button class="character-button button" data-character="あつこ">
+                        <div class="character-image" id="char-img-あつこ">🌻</div>
+                        <div class="character-name">あつこ</div>
+                    </button>
+                    <button class="character-button button" data-character="りき">
+                        <div class="character-image" id="char-img-りき">💪</div>
+                        <div class="character-name">りき</div>
+                    </button>
                 </div>
-                <div class="scroll-hint">← スワイプしてキャラクター選択 →</div>
+                <div class="scroll-hint">← スワイプしてキャラクターを選択 →</div>
             </div>
             
             <div style="font-size: 9px; margin: 15px 0 10px 0;">なんいどをえらぼう！</div>
@@ -421,14 +464,13 @@
                 <div>キャラ: <span id="current-character">たいよう</span></div>
                 <div>ステージ: <span id="current-stage">1</span></div>
                 <div>難易度: <span id="current-difficulty">かんたん</span></div>
-            </div>
-            
-            <div class="timer-display">
+	<div class="timer-display">
                 ⏰ タイム: <span id="game-timer">00:00</span>
             </div>
             
             <div class="enemy-counter">
                 👻 のこりてき: <span id="enemy-count">0</span>
+            </div>
             </div>
             
             <canvas id="game-canvas" class="game-canvas" width="350" height="350"></canvas>
@@ -439,8 +481,7 @@
             
             <div class="controls">
                 スマホ：画面をスワイプして移動<br>
-                PC：矢印キーで移動<br>
-                全ての敵を倒してからゴールへ！
+                PC：矢印キーで移動
             </div>
             
             <button class="button" onclick="showStageSelect()">ステージせんたくに戻る</button>
@@ -450,7 +491,7 @@
         <div id="clear-screen" class="screen">
             <div class="title">🎉 ステージクリア！ 🎉</div>
             <div id="clear-message" style="margin: 20px 0; font-size: 10px;"></div>
-            <div id="clear-time" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
+	　　<div id="clear-time" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
             <div id="new-character" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
             <button class="button" onclick="showStageSelect()">つぎのステージへ</button>
         </div>
@@ -486,31 +527,32 @@
             treasureCount: 0
         };
 
-        // 全キャラクターリスト
-        const allCharacters = [
-            'たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
-            'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'りき'
-        ];
-
-        // キャラクター表示用エモジ
-        const characterEmojis = {
-            'たいよう': '☀️',
-            'あきら': '⭐',
-            'あるま': '🌸',
-            'いおり': '🌺',
-            'しゅうご': '🌊',
-            'まほ': '🌙',
-            'しづき': '🍀',
-            'あさひ': '🌅',
-            'しゅん': '🎋',
-            'あつこ': '🌻',
-            'りき': '💪'
-        };
-
         // 画像データ
         const gameImages = {
-            characters: {},
-            characterSelect: {},
+            characters: {
+                'たいよう': null,
+                'あきら': null,
+                'あるま': null,
+                'いおり': null,
+                'しゅうご': null,
+                'まほ': null,
+                'しづき': null,
+                'あさひ': null,
+                'しゅん': null,
+                'あつこ': null
+            },
+            characterSelect: {
+                'たいよう': null,
+                'あきら': null,
+                'あるま': null,
+                'いおり': null,
+                'しゅうご': null,
+                'まほ': null,
+                'しづき': null,
+                'あさひ': null,
+                'しゅん': null,
+                'あつこ': null
+            },
             weapons: {
                 sword: null,
                 bow: null,
@@ -530,7 +572,212 @@
         // 読み込み済み画像を保存するオブジェクト
         const loadedImages = {};
 
-        // 12ステージの迷路データ
+        // 画像設定関数（ゲーム内用とキャラ選択用を分離）
+        function setCharacterImage(characterName, gameImagePath, selectImagePath = null) {
+            gameImages.characters[characterName] = gameImagePath;
+            
+            // キャラクター選択画面用の画像
+            const displayImagePath = selectImagePath || gameImagePath;
+            gameImages.characterSelect[characterName] = displayImagePath;
+            
+            const imgElement = document.getElementById(`char-img-${characterName}`);
+            if (imgElement && displayImagePath) {
+                imgElement.innerHTML = `<img src="${displayImagePath}" alt="${characterName}">`;
+            }
+            
+            // ゲーム内用の画像を事前読み込み
+            if (gameImagePath && !loadedImages[gameImagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[gameImagePath] = img;
+                    console.log('✅ キャラクター画像読み込み完了:', characterName);
+                };
+                img.onerror = function() {
+                    console.log('❌ キャラクター画像読み込み失敗:', gameImagePath);
+                };
+                img.src = gameImagePath;
+            }
+            
+            // 選択画面用の画像も事前読み込み（別画像の場合）
+            if (selectImagePath && selectImagePath !== gameImagePath && !loadedImages[selectImagePath]) {
+                const selectImg = new Image();
+                selectImg.onload = function() {
+                    loadedImages[selectImagePath] = selectImg;
+                    console.log('✅ 選択画面用画像読み込み完了:', characterName);
+                };
+                selectImg.onerror = function() {
+                    console.log('❌ 選択画面用画像読み込み失敗:', selectImagePath);
+                };
+                selectImg.src = selectImagePath;
+            }
+        }
+
+        function setWeaponImage(weaponType, imagePath) {
+            gameImages.weapons[weaponType] = imagePath;
+        }
+
+        function setEnemyImage(enemyType, imagePath) {
+            gameImages.enemies[enemyType] = imagePath;
+            
+            if (!loadedImages[imagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[imagePath] = img;
+                    console.log('✅ 敵画像読み込み完了:', enemyType);
+                };
+                img.onerror = function() {
+                    console.log('❌ 敵画像読み込み失敗:', imagePath);
+                };
+                img.src = imagePath;
+            }
+        }
+
+        function setItemImage(itemType, imagePath) {
+            gameImages.items[itemType] = imagePath;
+            
+            if (!loadedImages[imagePath]) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImages[imagePath] = img;
+                    console.log('✅ アイテム画像読み込み完了:', itemType);
+                };
+                img.onerror = function() {
+                    console.log('❌ アイテム画像読み込み失敗:', imagePath);
+                };
+                img.src = imagePath;
+            }
+        }
+
+        // ローカルストレージ
+        function loadGameData() {
+            const saved = localStorage.getItem('mazeGameSave');
+            if (saved) {
+                gameState = { ...gameState, ...JSON.parse(saved) };
+            }
+        }
+
+        function saveGameData() {
+            localStorage.setItem('mazeGameSave', JSON.stringify(gameState));
+        }
+
+        // 画面遷移
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showTitle() {
+            showScreen('title-screen');
+        }
+
+        function showStageSelect() {
+            showScreen('stage-select');
+            updateStageButtons();
+        }
+
+        function showCharacterSelect(stage) {
+            gameState.currentStage = stage;
+            document.getElementById('current-stage').textContent = stage;
+            showScreen('character-select');
+        }
+
+        // ステージボタンの更新
+        function updateStageButtons() {
+            const stageButtons = document.querySelectorAll('.stage-button');
+            stageButtons.forEach((button, index) => {
+                const stageNumber = index + 1;
+                if (stageNumber === 1 || gameState.clearedStages.includes(stageNumber - 1)) {
+                    button.disabled = false;
+                } else {
+                    button.disabled = true;
+                }
+            });
+        }
+
+        // キャラクター選択
+        document.querySelectorAll('.character-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const character = this.dataset.character;
+                if (gameState.unlockedCharacters.includes(character)) {
+                    document.querySelectorAll('.character-button').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    gameState.selectedCharacter = character;
+                } else {
+                    alert('このキャラクターはまだアンロックされていません！');
+                }
+            });
+        });
+
+        // 難易度選択
+        document.querySelectorAll('.difficulty-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.difficulty-button').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                gameState.selectedDifficulty = this.dataset.difficulty;
+            });
+        });
+
+        // ゲーム開始
+        function startGame() {
+            document.getElementById('current-character').textContent = gameState.selectedCharacter;
+            document.getElementById('current-stage').textContent = gameState.currentStage;
+            document.getElementById('current-difficulty').textContent = 
+                document.querySelector('.difficulty-button.selected').textContent;
+            
+            showScreen('game-screen');
+            initializeGame();
+        }
+	// タイマー関数
+        function startTimer() {
+            gameStartTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            if (!gameRunning) return;
+            
+            const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            document.getElementById('game-timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function getElapsedTime() {
+            const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+	function updateEnemyCounter() {
+            document.getElementById('enemy-count').textContent = movingEnemies.length;
+        }
+
+        // ゲーム初期化
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let player = { x: 1, y: 1 };
+        let friend = { x: 18, y: 18 };
+        let treasures = [];
+        let movingEnemies = [];
+        let gameRunning = false;
+        let lastEnemyMove = 0;
+	let gameStartTime = 0;
+        let timerInterval = null;
+        let totalEnemyCount = 0;
+
+	// 12ステージの迷路データ
         const stageData = {
             1: {
                 maze: [
@@ -555,16 +802,8 @@
                     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 5, y: 3 },
-                    { x: 15, y: 5 },
-                    { x: 9, y: 9 }
-                ],
-                enemies: [
-                    { x: 7, y: 7, dx: 1, dy: 0 },
-                    { x: 15, y: 10, dx: 0, dy: 1 },
-                    { x: 5, y: 15, dx: -1, dy: 0 }
-                ]
+                treasures: [{ x: 5, y: 5 }, { x: 15, y: 7 }, { x: 9, y: 11 }],
+                enemies: [{ x: 7, y: 7, dx: 1, dy: 0 }, { x: 15, y: 10, dx: 0, dy: 1 }, { x: 5, y: 15, dx: -1, dy: 0 }]
             },
             2: {
                 maze: [
@@ -589,18 +828,8 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 3, y: 3 },
-                    { x: 12, y: 7 },
-                    { x: 8, y: 13 },
-                    { x: 16, y: 11 }
-                ],
-                enemies: [
-                    { x: 6, y: 5, dx: 1, dy: 0 },
-                    { x: 14, y: 9, dx: 0, dy: 1 },
-                    { x: 5, y: 13, dx: -1, dy: 0 },
-                    { x: 11, y: 15, dx: 1, dy: 0 }
-                ]
+                treasures: [{ x: 3, y: 3 }, { x: 12, y: 7 }, { x: 8, y: 13 }, { x: 16, y: 11 }],
+                enemies: [{ x: 6, y: 5, dx: 1, dy: 0 }, { x: 14, y: 9, dx: 0, dy: 1 }, { x: 5, y: 13, dx: -1, dy: 0 }, { x: 11, y: 15, dx: 1, dy: 0 }]
             },
             3: {
                 maze: [
@@ -625,22 +854,9 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 7, y: 3 },
-                    { x: 4, y: 9 },
-                    { x: 13, y: 7 },
-                    { x: 17, y: 13 },
-                    { x: 9, y: 15 }
-                ],
-                enemies: [
-                    { x: 12, y: 3, dx: 1, dy: 0 },
-                    { x: 8, y: 9, dx: 0, dy: 1 },
-                    { x: 6, y: 11, dx: -1, dy: 0 },
-                    { x: 15, y: 7, dx: 1, dy: 0 },
-                    { x: 3, y: 15, dx: 0, dy: -1 }
-                ]
+                treasures: [{ x: 2, y: 5 }, { x: 6, y: 5 }, { x: 10, y: 5 }, { x: 14, y: 5 }, { x: 18, y: 5 }],
+                enemies: [{ x: 12, y: 3, dx: 1, dy: 0 }, { x: 8, y: 9, dx: 0, dy: 1 }, { x: 6, y: 11, dx: -1, dy: 0 }, { x: 15, y: 7, dx: 1, dy: 0 }, { x: 3, y: 15, dx: 0, dy: -1 }]
             },
-            // ステージ4-12のデータを追加
             4: {
                 maze: [
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -664,22 +880,8 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 5, y: 5 },
-                    { x: 11, y: 3 },
-                    { x: 7, y: 9 },
-                    { x: 13, y: 11 },
-                    { x: 3, y: 15 },
-                    { x: 15, y: 7 }
-                ],
-                enemies: [
-                    { x: 8, y: 5, dx: 1, dy: 0 },
-                    { x: 12, y: 9, dx: 0, dy: 1 },
-                    { x: 6, y: 13, dx: -1, dy: 0 },
-                    { x: 14, y: 5, dx: 1, dy: 0 },
-                    { x: 4, y: 11, dx: 0, dy: -1 },
-                    { x: 16, y: 15, dx: -1, dy: 0 }
-                ]
+                treasures: [{ x: 5, y: 5 }, { x: 11, y: 3 }, { x: 7, y: 9 }, { x: 13, y: 11 }, { x: 3, y: 15 }, { x: 15, y: 7 }],
+                enemies: [{ x: 8, y: 5, dx: 1, dy: 0 }, { x: 12, y: 9, dx: 0, dy: 1 }, { x: 6, y: 13, dx: -1, dy: 0 }, { x: 14, y: 5, dx: 1, dy: 0 }, { x: 4, y: 11, dx: 0, dy: -1 }, { x: 16, y: 15, dx: -1, dy: 0 }]
             },
             5: {
                 maze: [
@@ -704,24 +906,8 @@
                     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 4, y: 3 },
-                    { x: 12, y: 5 },
-                    { x: 7, y: 9 },
-                    { x: 15, y: 11 },
-                    { x: 5, y: 15 },
-                    { x: 11, y: 7 },
-                    { x: 17, y: 13 }
-                ],
-                enemies: [
-                    { x: 6, y: 5, dx: 1, dy: 0 },
-                    { x: 14, y: 7, dx: 0, dy: 1 },
-                    { x: 8, y: 11, dx: -1, dy: 0 },
-                    { x: 12, y: 13, dx: 1, dy: 0 },
-                    { x: 4, y: 9, dx: 0, dy: -1 },
-                    { x: 16, y: 9, dx: -1, dy: 0 },
-                    { x: 10, y: 15, dx: 1, dy: 0 }
-                ]
+                treasures: [{ x: 4, y: 3 }, { x: 12, y: 5 }, { x: 7, y: 9 }, { x: 15, y: 11 }, { x: 5, y: 15 }, { x: 11, y: 7 }, { x: 17, y: 13 }],
+                enemies: [{ x: 6, y: 5, dx: 1, dy: 0 }, { x: 14, y: 7, dx: 0, dy: 1 }, { x: 8, y: 11, dx: -1, dy: 0 }, { x: 12, y: 13, dx: 1, dy: 0 }, { x: 4, y: 9, dx: 0, dy: -1 }, { x: 16, y: 9, dx: -1, dy: 0 }, { x: 10, y: 15, dx: 1, dy: 0 }]
             },
             6: {
                 maze: [
@@ -746,26 +932,8 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 3, y: 3 },
-                    { x: 13, y: 5 },
-                    { x: 6, y: 9 },
-                    { x: 16, y: 7 },
-                    { x: 8, y: 13 },
-                    { x: 12, y: 11 },
-                    { x: 5, y: 15 },
-                    { x: 15, y: 13 }
-                ],
-                enemies: [
-                    { x: 7, y: 5, dx: 1, dy: 0 },
-                    { x: 13, y: 7, dx: 0, dy: 1 },
-                    { x: 5, y: 11, dx: -1, dy: 0 },
-                    { x: 15, y: 9, dx: 1, dy: 0 },
-                    { x: 3, y: 13, dx: 0, dy: -1 },
-                    { x: 11, y: 15, dx: -1, dy: 0 },
-                    { x: 17, y: 11, dx: 1, dy: 0 },
-                    { x: 9, y: 7, dx: 0, dy: 1 }
-                ]
+                treasures: [{ x: 3, y: 3 }, { x: 13, y: 5 }, { x: 6, y: 9 }, { x: 16, y: 7 }, { x: 8, y: 13 }, { x: 12, y: 11 }, { x: 5, y: 15 }, { x: 15, y: 13 }],
+                enemies: [{ x: 7, y: 5, dx: 1, dy: 0 }, { x: 13, y: 7, dx: 0, dy: 1 }, { x: 5, y: 11, dx: -1, dy: 0 }, { x: 15, y: 9, dx: 1, dy: 0 }, { x: 3, y: 13, dx: 0, dy: -1 }, { x: 11, y: 15, dx: -1, dy: 0 }, { x: 17, y: 11, dx: 1, dy: 0 }, { x: 9, y: 7, dx: 0, dy: 1 }]
             },
             7: {
                 maze: [
@@ -790,28 +958,8 @@
                     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 4, y: 3 },
-                    { x: 12, y: 3 },
-                    { x: 7, y: 7 },
-                    { x: 15, y: 9 },
-                    { x: 5, y: 11 },
-                    { x: 13, y: 13 },
-                    { x: 8, y: 15 },
-                    { x: 16, y: 11 },
-                    { x: 3, y: 15 }
-                ],
-                enemies: [
-                    { x: 6, y: 5, dx: 1, dy: 0 },
-                    { x: 14, y: 5, dx: 0, dy: 1 },
-                    { x: 8, y: 9, dx: -1, dy: 0 },
-                    { x: 12, y: 11, dx: 1, dy: 0 },
-                    { x: 4, y: 13, dx: 0, dy: -1 },
-                    { x: 16, y: 7, dx: -1, dy: 0 },
-                    { x: 10, y: 13, dx: 1, dy: 0 },
-                    { x: 6, y: 15, dx: 0, dy: 1 },
-                    { x: 14, y: 15, dx: -1, dy: 0 }
-                ]
+                treasures: [{ x: 4, y: 3 }, { x: 12, y: 3 }, { x: 7, y: 7 }, { x: 15, y: 9 }, { x: 5, y: 11 }, { x: 13, y: 13 }, { x: 8, y: 15 }, { x: 16, y: 11 }, { x: 3, y: 15 }],
+                enemies: [{ x: 6, y: 5, dx: 1, dy: 0 }, { x: 14, y: 5, dx: 0, dy: 1 }, { x: 8, y: 9, dx: -1, dy: 0 }, { x: 12, y: 11, dx: 1, dy: 0 }, { x: 4, y: 13, dx: 0, dy: -1 }, { x: 16, y: 7, dx: -1, dy: 0 }, { x: 10, y: 13, dx: 1, dy: 0 }, { x: 6, y: 15, dx: 0, dy: 1 }, { x: 14, y: 15, dx: -1, dy: 0 }]
             },
             8: {
                 maze: [
@@ -836,30 +984,8 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 5, y: 3 },
-                    { x: 11, y: 5 },
-                    { x: 7, y: 9 },
-                    { x: 13, y: 7 },
-                    { x: 3, y: 11 },
-                    { x: 15, y: 13 },
-                    { x: 9, y: 15 },
-                    { x: 17, y: 9 },
-                    { x: 5, y: 15 },
-                    { x: 13, y: 11 }
-                ],
-                enemies: [
-                    { x: 8, y: 5, dx: 1, dy: 0 },
-                    { x: 12, y: 7, dx: 0, dy: 1 },
-                    { x: 6, y: 11, dx: -1, dy: 0 },
-                    { x: 14, y: 9, dx: 1, dy: 0 },
-                    { x: 4, y: 13, dx: 0, dy: -1 },
-                    { x: 16, y: 11, dx: -1, dy: 0 },
-                    { x: 10, y: 13, dx: 1, dy: 0 },
-                    { x: 7, y: 15, dx: 0, dy: 1 },
-                    { x: 15, y: 15, dx: -1, dy: 0 },
-                    { x: 11, y: 9, dx: 1, dy: 0 }
-                ]
+                treasures: [{ x: 5, y: 3 }, { x: 11, y: 5 }, { x: 7, y: 9 }, { x: 13, y: 7 }, { x: 3, y: 11 }, { x: 15, y: 13 }, { x: 9, y: 15 }, { x: 17, y: 9 }, { x: 5, y: 15 }, { x: 13, y: 11 }],
+                enemies: [{ x: 8, y: 5, dx: 1, dy: 0 }, { x: 12, y: 7, dx: 0, dy: 1 }, { x: 6, y: 11, dx: -1, dy: 0 }, { x: 14, y: 9, dx: 1, dy: 0 }, { x: 4, y: 13, dx: 0, dy: -1 }, { x: 16, y: 11, dx: -1, dy: 0 }, { x: 10, y: 13, dx: 1, dy: 0 }, { x: 7, y: 15, dx: 0, dy: 1 }, { x: 15, y: 15, dx: -1, dy: 0 }, { x: 11, y: 9, dx: 1, dy: 0 }]
             },
             9: {
                 maze: [
@@ -884,32 +1010,8 @@
                     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 4, y: 3 },
-                    { x: 12, y: 5 },
-                    { x: 7, y: 9 },
-                    { x: 15, y: 7 },
-                    { x: 5, y: 13 },
-                    { x: 11, y: 11 },
-                    { x: 17, y: 13 },
-                    { x: 3, y: 15 },
-                    { x: 13, y: 15 },
-                    { x: 9, y: 7 },
-                    { x: 16, y: 9 }
-                ],
-                enemies: [
-                    { x: 6, y: 5, dx: 1, dy: 0 },
-                    { x: 14, y: 7, dx: 0, dy: 1 },
-                    { x: 8, y: 11, dx: -1, dy: 0 },
-                    { x: 12, y: 13, dx: 1, dy: 0 },
-                    { x: 4, y: 9, dx: 0, dy: -1 },
-                    { x: 16, y: 11, dx: -1, dy: 0 },
-                    { x: 10, y: 15, dx: 1, dy: 0 },
-                    { x: 6, y: 13, dx: 0, dy: 1 },
-                    { x: 14, y: 15, dx: -1, dy: 0 },
-                    { x: 11, y: 7, dx: 1, dy: 0 },
-                    { x: 15, y: 15, dx: 0, dy: -1 }
-                ]
+                treasures: [{ x: 4, y: 3 }, { x: 12, y: 5 }, { x: 7, y: 9 }, { x: 15, y: 7 }, { x: 5, y: 13 }, { x: 11, y: 11 }, { x: 17, y: 13 }, { x: 3, y: 15 }, { x: 13, y: 15 }, { x: 9, y: 7 }, { x: 16, y: 9 }],
+                enemies: [{ x: 6, y: 5, dx: 1, dy: 0 }, { x: 14, y: 7, dx: 0, dy: 1 }, { x: 8, y: 11, dx: -1, dy: 0 }, { x: 12, y: 13, dx: 1, dy: 0 }, { x: 4, y: 9, dx: 0, dy: -1 }, { x: 16, y: 11, dx: -1, dy: 0 }, { x: 10, y: 15, dx: 1, dy: 0 }, { x: 6, y: 13, dx: 0, dy: 1 }, { x: 14, y: 15, dx: -1, dy: 0 }, { x: 11, y: 7, dx: 1, dy: 0 }, { x: 15, y: 15, dx: 0, dy: -1 }]
             },
             10: {
                 maze: [
@@ -934,34 +1036,8 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 3, y: 3 },
-                    { x: 13, y: 5 },
-                    { x: 6, y: 9 },
-                    { x: 16, y: 7 },
-                    { x: 8, y: 13 },
-                    { x: 12, y: 11 },
-                    { x: 5, y: 15 },
-                    { x: 15, y: 13 },
-                    { x: 9, y: 7 },
-                    { x: 17, y: 9 },
-                    { x: 7, y: 15 },
-                    { x: 11, y: 13 }
-                ],
-                enemies: [
-                    { x: 7, y: 5, dx: 1, dy: 0 },
-                    { x: 13, y: 7, dx: 0, dy: 1 },
-                    { x: 5, y: 11, dx: -1, dy: 0 },
-                    { x: 15, y: 9, dx: 1, dy: 0 },
-                    { x: 3, y: 13, dx: 0, dy: -1 },
-                    { x: 11, y: 15, dx: -1, dy: 0 },
-                    { x: 17, y: 11, dx: 1, dy: 0 },
-                    { x: 9, y: 7, dx: 0, dy: 1 },
-                    { x: 14, y: 13, dx: -1, dy: 0 },
-                    { x: 6, y: 15, dx: 1, dy: 0 },
-                    { x: 12, y: 9, dx: 0, dy: -1 },
-                    { x: 16, y: 15, dx: -1, dy: 0 }
-                ]
+                treasures: [{ x: 3, y: 3 }, { x: 13, y: 5 }, { x: 6, y: 9 }, { x: 16, y: 7 }, { x: 8, y: 13 }, { x: 12, y: 11 }, { x: 5, y: 15 }, { x: 15, y: 13 }, { x: 9, y: 7 }, { x: 17, y: 9 }, { x: 7, y: 15 }, { x: 11, y: 13 }],
+                enemies: [{ x: 7, y: 5, dx: 1, dy: 0 }, { x: 13, y: 7, dx: 0, dy: 1 }, { x: 5, y: 11, dx: -1, dy: 0 }, { x: 15, y: 9, dx: 1, dy: 0 }, { x: 3, y: 13, dx: 0, dy: -1 }, { x: 11, y: 15, dx: -1, dy: 0 }, { x: 17, y: 11, dx: 1, dy: 0 }, { x: 9, y: 7, dx: 0, dy: 1 }, { x: 14, y: 13, dx: -1, dy: 0 }, { x: 6, y: 15, dx: 1, dy: 0 }, { x: 12, y: 9, dx: 0, dy: -1 }, { x: 16, y: 15, dx: -1, dy: 0 }]
             },
             11: {
                 maze: [
@@ -986,36 +1062,8 @@
                     [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 4, y: 3 },
-                    { x: 12, y: 3 },
-                    { x: 7, y: 7 },
-                    { x: 15, y: 9 },
-                    { x: 5, y: 11 },
-                    { x: 13, y: 13 },
-                    { x: 8, y: 15 },
-                    { x: 16, y: 11 },
-                    { x: 3, y: 15 },
-                    { x: 11, y: 7 },
-                    { x: 17, y: 13 },
-                    { x: 6, y: 13 },
-                    { x: 14, y: 15 }
-                ],
-                enemies: [
-                    { x: 6, y: 5, dx: 1, dy: 0 },
-                    { x: 14, y: 5, dx: 0, dy: 1 },
-                    { x: 8, y: 9, dx: -1, dy: 0 },
-                    { x: 12, y: 11, dx: 1, dy: 0 },
-                    { x: 4, y: 13, dx: 0, dy: -1 },
-                    { x: 16, y: 7, dx: -1, dy: 0 },
-                    { x: 10, y: 13, dx: 1, dy: 0 },
-                    { x: 6, y: 15, dx: 0, dy: 1 },
-                    { x: 14, y: 15, dx: -1, dy: 0 },
-                    { x: 9, y: 9, dx: 1, dy: 0 },
-                    { x: 15, y: 15, dx: 0, dy: -1 },
-                    { x: 5, y: 9, dx: 1, dy: 0 },
-                    { x: 17, y: 15, dx: -1, dy: 0 }
-                ]
+                treasures: [{ x: 4, y: 3 }, { x: 12, y: 3 }, { x: 7, y: 7 }, { x: 15, y: 9 }, { x: 5, y: 11 }, { x: 13, y: 13 }, { x: 8, y: 15 }, { x: 16, y: 11 }, { x: 3, y: 15 }, { x: 11, y: 7 }, { x: 17, y: 13 }, { x: 6, y: 13 }, { x: 14, y: 15 }],
+                enemies: [{ x: 6, y: 5, dx: 1, dy: 0 }, { x: 14, y: 5, dx: 0, dy: 1 }, { x: 8, y: 9, dx: -1, dy: 0 }, { x: 12, y: 11, dx: 1, dy: 0 }, { x: 4, y: 13, dx: 0, dy: -1 }, { x: 16, y: 7, dx: -1, dy: 0 }, { x: 10, y: 13, dx: 1, dy: 0 }, { x: 6, y: 15, dx: 0, dy: 1 }, { x: 14, y: 15, dx: -1, dy: 0 }, { x: 9, y: 9, dx: 1, dy: 0 }, { x: 15, y: 15, dx: 0, dy: -1 }, { x: 5, y: 9, dx: 1, dy: 0 }, { x: 17, y: 15, dx: -1, dy: 0 }]
             },
             12: {
                 maze: [
@@ -1040,36 +1088,443 @@
                     [1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,3,1],
                     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
                 ],
-                treasures: [
-                    { x: 5, y: 3 },
-                    { x: 11, y: 5 },
-                    { x: 7, y: 9 },
-                    { x: 13, y: 7 },
-                    { x: 3, y: 11 },
-                    { x: 15, y: 13 },
-                    { x: 9, y: 15 },
-                    { x: 17, y: 9 },
-                    { x: 5, y: 15 },
-                    { x: 13, y: 11 },
-                    { x: 8, y: 13 },
-                    { x: 16, y: 15 },
-                    { x: 6, y: 7 },
-                    { x: 14, y: 9 }
-                ],
-                enemies: [
-                    { x: 8, y: 5, dx: 1, dy: 0 },
-                    { x: 12, y: 7, dx: 0, dy: 1 },
-                    { x: 6, y: 11, dx: -1, dy: 0 },
-                    { x: 14, y: 9, dx: 1, dy: 0 },
-                    { x: 4, y: 13, dx: 0, dy: -1 },
-                    { x: 16, y: 11, dx: -1, dy: 0 },
-                    { x: 10, y: 13, dx: 1, dy: 0 },
-                    { x: 7, y: 15, dx: 0, dy: 1 },
-                    { x: 15, y: 15, dx: -1, dy: 0 },
-                    { x: 11, y: 9, dx: 1, dy: 0 },
-                    { x: 5, y: 13, dx: 0, dy: -1 },
-                    { x: 17, y: 13, dx: -1, dy: 0 },
-                    { x: 9, y: 11, dx: 1, dy: 0 },
-                    { x: 13, y: 15, dx: 0, dy: -1 }
-                ]
+                treasures: [{ x: 5, y: 3 }, { x: 11, y: 5 }, { x: 7, y: 9 }, { x: 13, y: 7 }, { x: 3, y: 11 }, { x: 15, y: 13 }, { x: 9, y: 15 }, { x: 17, y: 9 }, { x: 5, y: 15 }, { x: 13, y: 11 }, { x: 8, y: 13 }, { x: 16, y: 15 }, { x: 6, y: 7 }, { x: 14, y: 9 }],
+                enemies: [{ x: 8, y: 5, dx: 1, dy: 0 }, { x: 12, y: 7, dx: 0, dy: 1 }, { x: 6, y: 11, dx: -1, dy: 0 }, { x: 14, y: 9, dx: 1, dy: 0 }, { x: 4, y: 13, dx: 0, dy: -1 }, { x: 16, y: 11, dx: -1, dy: 0 }, { x: 10, y: 13, dx: 1, dy: 0 }, { x: 7, y: 15, dx: 0, dy: 1 }, { x: 15, y: 15, dx: -1, dy: 0 }, { x: 11, y: 9, dx: 1, dy: 0 }, { x: 5, y: 13, dx: 0, dy: -1 }, { x: 17, y: 13, dx: -1, dy: 0 }, { x: 9, y: 11, dx: 1, dy: 0 }, { x: 13, y: 15, dx: 0, dy: -1 }]
             }
+        };
+
+	function initializeGame() {
+            const currentStageData = stageData[gameState.currentStage];
+            if (!currentStageData) {
+                console.error('ステージデータが見つかりません:', gameState.currentStage);
+                return;
+            }
+
+            player = { x: 1, y: 1 };
+            friend = { x: 18, y: 18 };
+            
+            // 難易度による敵の数の調整
+            let enemyMultiplier;
+            switch(gameState.selectedDifficulty) {
+                case 'easy': enemyMultiplier = 1.0; break;
+                case 'normal': enemyMultiplier = 1.0; break;
+                case 'hard': enemyMultiplier = 1.0; break;
+                case 'extreme': enemyMultiplier = 1.0; break;
+                default: enemyMultiplier = 1.0;
+            }
+            
+            const maxEnemies = currentStageData.enemies.length;
+            
+            // 敵の配置
+            movingEnemies = [];
+            for (let i = 0; i < maxEnemies; i++) {
+                if (currentStageData.enemies[i]) {
+                    movingEnemies.push({ ...currentStageData.enemies[i] });
+                }
+            }
+            
+            totalEnemyCount = movingEnemies.length;
+            
+            // 宝箱の配置
+            treasures = [];
+            for (let i = 0; i < Math.min(maxEnemies, currentStageData.treasures.length); i++) {
+                if (currentStageData.treasures[i]) {
+                    treasures.push({ ...currentStageData.treasures[i], collected: false });
+                }
+            }
+            
+            gameState.weaponCount = 0;
+            gameState.treasureCount = 0;
+            gameRunning = true;
+            lastEnemyMove = Date.now();
+            updateInventory();
+	　　updateEnemyCounter();
+            startTimer();
+            drawGame();
+            
+            moveEnemies();
+        }
+
+	function drawGame() {
+            const currentStageData = stageData[gameState.currentStage];
+            if (!currentStageData) return;
+            
+            const maze = currentStageData.maze;
+            
+            ctx.fillStyle = '#0f0f23';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cellSize = Math.min(canvas.width / 20, canvas.height / 20);
+
+            // 迷路を描画
+            for (let y = 0; y < maze.length; y++) {
+                for (let x = 0; x < maze[y].length; x++) {
+                    if (maze[y][x] === 1) {
+                        ctx.fillStyle = '#2d3436';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.fillStyle = '#636e72';
+                        ctx.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
+                    }
+                }
+            }
+
+            // 宝箱を描画
+            treasures.forEach(treasure => {
+                if (!treasure.collected) {
+                    const treasureImagePath = gameImages.items.treasure;
+                    if (treasureImagePath && loadedImages[treasureImagePath]) {
+                        ctx.drawImage(loadedImages[treasureImagePath], treasure.x * cellSize, treasure.y * cellSize, cellSize, cellSize);
+                    } else {
+                        drawDefaultTreasure(treasure.x, treasure.y, cellSize);
+                    }
+                }
+            });
+
+            // 動く敵を描画
+            movingEnemies.forEach((enemy, index) => {
+                const enemyImagePath = gameImages.enemies.zombie;
+                if (enemyImagePath && loadedImages[enemyImagePath]) {
+                    ctx.drawImage(loadedImages[enemyImagePath], enemy.x * cellSize, enemy.y * cellSize, cellSize, cellSize);
+                } else {
+                    ctx.fillStyle = '#e84118';
+                    ctx.fillRect(enemy.x * cellSize + 2, enemy.y * cellSize + 2, cellSize - 4, cellSize - 4);
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = `${cellSize * 0.6}px monospace`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('👻', enemy.x * cellSize + cellSize/2, enemy.y * cellSize + cellSize/2 + 4);
+                }
+            });
+
+            // 友達を描画（ゴール地点）
+            if (gameImages.items.friend && loadedImages[gameImages.items.friend]) {
+                ctx.drawImage(loadedImages[gameImages.items.friend], friend.x * cellSize, friend.y * cellSize, cellSize, cellSize);
+            } else {
+                ctx.fillStyle = '#00b894';
+                ctx.fillRect(friend.x * cellSize + 2, friend.y * cellSize + 2, cellSize - 4, cellSize - 4);
+                
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `${cellSize * 0.6}px monospace`;
+                ctx.textAlign = 'center';
+                ctx.fillText('👥', friend.x * cellSize + cellSize/2, friend.y * cellSize + cellSize/2 + 4);
+            }
+
+            // プレイヤーを描画
+            const playerImagePath = gameImages.characters[gameState.selectedCharacter];
+            if (playerImagePath && loadedImages[playerImagePath]) {
+                ctx.drawImage(loadedImages[playerImagePath], player.x * cellSize, player.y * cellSize, cellSize, cellSize);
+            } else {
+                drawDefaultPlayer(cellSize);
+            }
+        }
+        
+        function drawDefaultTreasure(x, y, cellSize) {
+            ctx.fillStyle = '#fdcb6e';
+            ctx.fillRect(x * cellSize + 2, y * cellSize + 2, cellSize - 4, cellSize - 4);
+            ctx.fillStyle = '#e17055';
+            ctx.fillRect(x * cellSize + 4, y * cellSize + 4, cellSize - 8, cellSize - 8);
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${cellSize * 0.6}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillText('💰', x * cellSize + cellSize/2, y * cellSize + cellSize/2 + 4);
+        }
+        
+        function drawDefaultPlayer(cellSize) {
+            ctx.fillStyle = '#74b9ff';
+            ctx.fillRect(player.x * cellSize + 3, player.y * cellSize + 3, cellSize - 6, cellSize - 6);
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${cellSize * 0.6}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillText('😊', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2 + 4);
+        }
+
+        function movePlayer(dx, dy) {
+            if (!gameRunning) return;
+
+            const currentStageData = stageData[gameState.currentStage];
+            if (!currentStageData) return;
+            
+            const maze = currentStageData.maze;
+            const newX = player.x + dx;
+            const newY = player.y + dy;
+
+            if (maze[newY] && maze[newY][newX] !== 1) {
+
+                player.x = newX;
+                player.y = newY;
+
+                // 宝箱との衝突判定
+                treasures.forEach((treasure, index) => {
+                    if (!treasure.collected && player.x === treasure.x && player.y === treasure.y) {
+                        treasure.collected = true;
+                        gameState.weaponCount++;
+                        gameState.treasureCount++;
+                        updateInventory();
+                        
+                        const weapons = ['🗡️ 剣', '🏹 弓', '🔥 ファイアボール'];
+                        const randomWeapon = weapons[Math.floor(Math.random() * weapons.length)];
+                        
+                        showPopup(`${randomWeapon}をゲット！`, `${randomWeapon}を手に入れた！<br>これで敵を倒せるよ！`);
+                    }
+                });
+
+                // 動く敵との衝突判定
+                for (let i = movingEnemies.length - 1; i >= 0; i--) {
+                    const enemy = movingEnemies[i];
+                    if (player.x === enemy.x && player.y === enemy.y) {
+                        if (gameState.weaponCount > 0) {
+                            movingEnemies.splice(i, 1);
+                            gameState.weaponCount--;
+                            updateInventory();
+			　
+                            showPopup('⚔️ 敵を倒した！', `敵をやっつけた！<br>武器が1つ減ったよ<br>残り武器：${gameState.weaponCount}個`);
+                        } else {
+                            gameRunning = false;
+			　　stopTimer();
+                            showPopup('💀 ゲームオーバー！', '武器がないと敵にやられちゃった！<br>次はもっと気をつけよう！', () => {
+                                showGameOver();
+                            });
+                            return;
+                        }
+                        break;
+                    }
+                }
+
+		// 友達（ゴール）との衝突判定 - 全ての敵を倒していることが条件
+                if (player.x === friend.x && player.y === friend.y) {
+                    if (movingEnemies.length === 0) {
+                        gameRunning = false;
+                        stopTimer();
+                        
+                        const elapsedTime = getElapsedTime(); 
+                   
+                        const newFriend = getRandomCharacter();
+                        if (newFriend && !gameState.unlockedCharacters.includes(newFriend)) {
+                            gameState.unlockedCharacters.push(newFriend);
+                            showPopup('🎉 友達に会えた！', `${newFriend}に会えた！やったー！<br>新しい友達をゲットしたよ！<br>クリアタイム: ${elapsedTime}`, () => {
+                                showClearScreen(newFriend, elapsedTime);
+                            });
+                        } else {
+                            showPopup('🎉 友達に会えた！', `友達に会えた！やったー！<br>クリアタイム: ${elapsedTime}`, () => {
+                                showClearScreen(null, elapsedTime);
+                            });
+                        }
+                        
+                        gameState.clearedStages.push(gameState.currentStage);
+                        saveGameData();
+                    } else {
+                        showPopup('❌ まだクリアできない！', `まだ敵が${movingEnemies.length}体残ってるよ！<br>全ての敵を倒してからゴールに向かおう！`);
+                    }
+                }
+
+                drawGame();
+            }
+        }
+function getRandomCharacter() {
+            const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
+                                   'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'りき'];
+            const locked = allCharacters.filter(char => !gameState.unlockedCharacters.includes(char));
+            return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
+        }
+
+        // 敵の移動処理
+        function moveEnemies() {
+            if (!gameRunning) return;
+            
+            let enemySpeed;
+            switch(gameState.selectedDifficulty) {
+                case 'easy': enemySpeed = 800; break;
+                case 'normal': enemySpeed = 500; break;
+                case 'hard': enemySpeed = 300; break;
+                case 'extreme': enemySpeed = 150; break;
+                default: enemySpeed = 500;
+            }
+	const currentStageData = stageData[gameState.currentStage];
+            if (!currentStageData) return;
+            
+            const maze = currentStageData.maze;
+            
+            const now = Date.now();
+            if (now - lastEnemyMove > enemySpeed) {
+                movingEnemies.forEach(enemy => {
+                    const newX = enemy.x + enemy.dx;
+                    const newY = enemy.y + enemy.dy;
+                    
+                    if (!maze[newY] || maze[newY][newX] === 1 || newX < 0 || newX >= 20 || newY < 0 || newY >= 20) {
+                        const directions = [
+                            { dx: 1, dy: 0 },
+                            { dx: -1, dy: 0 },
+                            { dx: 0, dy: 1 },
+                            { dx: 0, dy: -1 }
+                        ];
+                        const randomDirection = directions[Math.floor(Math.random() * directions.length)];
+                        enemy.dx = randomDirection.dx;
+                        enemy.dy = randomDirection.dy;
+                    } else {
+                        enemy.x = newX;
+                        enemy.y = newY;
+                    }
+                });
+                
+                lastEnemyMove = now;
+                drawGame();
+            }
+            
+            if (gameRunning) {
+                requestAnimationFrame(moveEnemies);
+            }
+        }
+
+        // ポップアップ表示
+        function showPopup(title, message, callback = null) {
+            document.getElementById('popup-title').textContent = title;
+            document.getElementById('popup-message').innerHTML = message;
+            document.getElementById('popup').classList.add('show');
+            
+            window.popupCallback = callback;
+        }
+
+        function closePopup() {
+            document.getElementById('popup').classList.remove('show');
+            
+            if (window.popupCallback) {
+                setTimeout(window.popupCallback, 100);
+                window.popupCallback = null;
+            }
+        }
+
+        function updateInventory() {
+            const weaponSlot = document.getElementById('weapon-slot');
+            
+            if (gameState.weaponCount > 0) {
+                weaponSlot.classList.add('has-item');
+                weaponSlot.textContent = `🗡️${gameState.weaponCount}`;
+            } else {
+                weaponSlot.classList.remove('has-item');
+                weaponSlot.textContent = '🔒';
+            }
+        }
+
+	function showClearScreen(newCharacter = null, clearTime = null) {
+            const message = document.getElementById('clear-message');
+            const timeEl = document.getElementById('clear-time');
+            const newCharEl = document.getElementById('new-character');
+            
+            message.textContent = `ステージ ${gameState.currentStage} をクリアしました！`;
+            
+            if (clearTime) {
+                timeEl.textContent = `🏆 クリアタイム: ${clearTime}`;
+                timeEl.style.display = 'block';
+            } else {
+                timeEl.style.display = 'none';
+            }
+            
+            if (newCharacter) {
+                newCharEl.textContent = `🎉 あたらしい友達「${newCharacter}」をゲットした！`;
+                newCharEl.style.display = 'block';
+            } else {
+                newCharEl.style.display = 'none';
+            }
+            
+            showScreen('clear-screen');
+        }
+
+        function showGameOver() {
+            showScreen('gameover-screen');
+        }
+
+        function restartGame() {
+            stopTimer();
+            showScreen('game-screen');
+            initializeGame();
+        }
+
+        // アンロックされたキャラクターのボタンを更新
+        function updateCharacterButtons() {
+            document.querySelectorAll('.character-button').forEach(button => {
+                const character = button.dataset.character;
+                if (gameState.unlockedCharacters.includes(character)) {
+                    button.disabled = false;
+                    button.style.opacity = '1';
+                } else {
+                    button.disabled = true;
+                    button.style.opacity = '0.5';
+                }
+            });
+        }
+
+        // キーボードイベント
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowUp': movePlayer(0, -1); break;
+                case 'ArrowDown': movePlayer(0, 1); break;
+                case 'ArrowLeft': movePlayer(-1, 0); break;
+                case 'ArrowRight': movePlayer(1, 0); break;
+            }
+        });
+
+        // タッチイベント（スマートフォン用）- 画面の揺れを防止
+        let touchStartX, touchStartY;
+
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            touchStartX = touch.clientX - rect.left;
+            touchStartY = touch.clientY - rect.top;
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!touchStartX || !touchStartY) return;
+
+            const touch = e.changedTouches[0];
+            const rect = canvas.getBoundingClientRect();
+            const touchEndX = touch.clientX - rect.left;
+            const touchEndY = touch.clientY - rect.top;
+
+            const dx = touchEndX - touchStartX;
+            const dy = touchEndY - touchStartY;
+
+            // 最小移動距離を設定
+            const minDistance = 20;
+            if (Math.abs(dx) > minDistance || Math.abs(dy) > minDistance) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    movePlayer(dx > 0 ? 1 : -1, 0);
+                } else {
+                    movePlayer(0, dy > 0 ? 1 : -1);
+                }
+            }
+        }, { passive: false });
+
+        // 全体のタッチイベントを制御
+        document.addEventListener('touchmove', function(e) {
+            if (e.target === canvas || e.target.closest('.character-select')) {
+                return; // キャンバスとキャラクター選択のスクロールは許可
+            }
+            e.preventDefault();
+        }, { passive: false });
+
+        // ゲーム初期化時にデータを読み込み
+        loadGameData();
+
+        // 初期化
+        updateCharacterButtons();
+        updateStageButtons();
+
+        // 画像を設定
+        setItemImage('treasure', 'images/items/treasure_red_gold.png');
+        setCharacterImage('たいよう', 'images/characters/taiyou_small.png', 'images/characters/taiyou_large.png');
+        setEnemyImage('zombie', 'images/enemies/character_monster_zombie_02_green.png');
+    </script>
+</body>
+</html>
