@@ -1340,6 +1340,13 @@
                     <div class="character-name">${character}</div>
                 `;
                 
+                // 画像が設定されている場合は画像を表示
+                const imagePath = gameImages.characterSelect[character];
+                if (imagePath) {
+                    const imgElement = button.querySelector('.character-image');
+                    imgElement.innerHTML = `<img src="${imagePath}" alt="${character}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">`;
+                }
+                
                 button.addEventListener('click', function() {
                     document.querySelectorAll('.character-button').forEach(b => b.classList.remove('selected'));
                     this.classList.add('selected');
