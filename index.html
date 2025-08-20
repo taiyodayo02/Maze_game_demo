@@ -448,6 +448,21 @@
         <div id="clear-screen" class="screen">
             <div class="title">🎉 ステージクリア！ 🎉</div>
             <div id="clear-message" style="margin: 20px 0; font-size: 10px;"></div>
+	　　<div id="character-showcase" style="display: none; margin: 20px 0;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 9px; margin-bottom: 5px;">あなた</div>
+                        <div id="player-character-display" style="width: 60px; height: 60px; background: #ffffff; border: 2px solid #2f3542; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto;"></div>
+                        <div id="player-character-name" style="font-size: 9px; margin-top: 5px; color: #ffffff;"></div>
+                    </div>
+                    <div style="font-size: 20px; color: #ffa502;">+</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 9px; margin-bottom: 5px;">あたらしい友達</div>
+                        <div id="new-character-display" style="width: 60px; height: 60px; background: #ffffff; border: 2px solid #2f3542; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto;"></div>
+                        <div id="new-character-name" style="font-size: 9px; margin-top: 5px; color: #ffffff;"></div>
+                    </div>
+                </div>
+            </div>
 	　　<div id="clear-time" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
             <div id="new-character" style="margin: 15px 0; font-size: 12px; color: #ffa502;"></div>
             <button class="button" onclick="showStageSelect()">つぎのステージへ</button>
@@ -1386,6 +1401,30 @@ function getRandomCharacter() {
                 });
                 
                 lastEnemyMove = now;
+
+	// 敵からプレイヤーへの接触判定
+                movingEnemies.forEach(enemy => {
+                    if (player.x === enemy.x && player.y === enemy.y) {
+                        if (gameState.weaponCount > 0) {
+                            // 武器があれば敵を倒す
+                            const enemyIndex = movingEnemies.indexOf(enemy);
+                            if (enemyIndex > -1) {
+                                movingEnemies.splice(enemyIndex, 1);
+                                gameState.weaponCount--;
+                                updateInventory();
+                                updateEnemyCounter();
+                                showPopup('⚔️ 敵を倒した！', `敵がぶつかってきた！<br>武器で撃退したよ！<br>残り武器：${gameState.weaponCount}個`);
+                            }
+                        } else {
+                            // 武器がなければゲームオーバー
+                            gameRunning = false;
+                            stopTimer();
+                            showPopup('💀 ゲームオーバー！', '敵にぶつかられちゃった！<br>武器がないと危険だよ！', () => {
+                                showGameOver();
+                            });
+                        }
+                    }
+                });
                 drawGame();
             }
             
@@ -1428,6 +1467,7 @@ function getRandomCharacter() {
             const message = document.getElementById('clear-message');
             const timeEl = document.getElementById('clear-time');
             const newCharEl = document.getElementById('new-character');
+            const characterShowcase = document.getElementById('character-showcase');
             
             message.textContent = `ステージ ${gameState.currentStage} をクリアしました！`;
             
@@ -1439,10 +1479,27 @@ function getRandomCharacter() {
             }
             
             if (newCharacter) {
+                // 新キャラクター獲得時の表示
                 newCharEl.textContent = `🎉 あたらしい友達「${newCharacter}」をゲットした！`;
                 newCharEl.style.display = 'block';
+                
+                // キャラクター画像表示
+                characterShowcase.style.display = 'block';
+                
+                // プレイヤーキャラクター表示
+                const playerDisplay = document.getElementById('player-character-display');
+                const playerName = document.getElementById('player-character-name');
+                playerDisplay.textContent = characterEmojis[gameState.selectedCharacter] || '😊';
+                playerName.textContent = gameState.selectedCharacter;
+                
+                // 新キャラクター表示
+                const newCharDisplay = document.getElementById('new-character-display');
+                const newCharName = document.getElementById('new-character-name');
+                newCharDisplay.textContent = characterEmojis[newCharacter] || '😊';
+                newCharName.textContent = newCharacter;
             } else {
                 newCharEl.style.display = 'none';
+                characterShowcase.style.display = 'none';
             }
             
             showScreen('clear-screen');
