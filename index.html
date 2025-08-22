@@ -1497,13 +1497,23 @@ function getRandomCharacter() {
                 // プレイヤーキャラクター表示
                 const playerDisplay = document.getElementById('player-character-display');
                 const playerName = document.getElementById('player-character-name');
-                playerDisplay.textContent = characterEmojis[gameState.selectedCharacter] || '😊';
+                const playerImagePath = gameImages.characterSelect[gameState.selectedCharacter];
+                if (playerImagePath) {
+                    playerDisplay.innerHTML = `<img src="${playerImagePath}" alt="${gameState.selectedCharacter}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">`;
+                } else {
+                    playerDisplay.textContent = characterEmojis[gameState.selectedCharacter] || '😊';
+                }
                 playerName.textContent = gameState.selectedCharacter;
                 
                 // 新キャラクター表示
                 const newCharDisplay = document.getElementById('new-character-display');
                 const newCharName = document.getElementById('new-character-name');
-                newCharDisplay.textContent = characterEmojis[newCharacter] || '😊';
+                const newCharImagePath = gameImages.characterSelect[newCharacter];
+                if (newCharImagePath) {
+                    newCharDisplay.innerHTML = `<img src="${newCharImagePath}" alt="${newCharacter}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">`;
+                } else {
+                    newCharDisplay.textContent = characterEmojis[newCharacter] || '😊';
+                }
                 newCharName.textContent = newCharacter;
             } else {
                 newCharEl.style.display = 'none';
