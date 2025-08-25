@@ -1379,13 +1379,7 @@ characterSelect: {
            // プレイヤーを描画
 const playerImagePath = gameImages.characters[gameState.selectedCharacter];
 if (playerImagePath && loadedImages[playerImagePath]) {
-    // 背景として白い円を描画
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.beginPath();
-    ctx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/2 + 2, 0, 2 * Math.PI);
-    ctx.fill();
-    
-    // 画像を少し大きく、中央に配置
+    // 画像のみを少し大きく表示
     const imageSize = cellSize * 1.2;
     const offset = (cellSize - imageSize) / 2;
     ctx.drawImage(loadedImages[playerImagePath], 
@@ -1393,13 +1387,6 @@ if (playerImagePath && loadedImages[playerImagePath]) {
         player.y * cellSize + offset, 
         imageSize, 
         imageSize);
-        
-    // 枠線を追加
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/2 + 1, 0, 2 * Math.PI);
-    ctx.stroke();
 } else {
     drawDefaultPlayer(cellSize);
 }
