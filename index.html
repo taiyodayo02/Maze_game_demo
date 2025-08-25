@@ -330,6 +330,9 @@
     justify-content: center;
     align-items: center;
     background: #0f0f23;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .title-image-container {
@@ -339,6 +342,9 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-image {
@@ -346,6 +352,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .title-start-button {
