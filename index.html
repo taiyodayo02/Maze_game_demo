@@ -192,6 +192,25 @@
         }
         
         .difficulty-button.selected {
+			/* ヤバすぎヤバおボタン専用スタイル */
+.difficulty-button[data-difficulty="extreme"] {
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
+    background-size: 400% 400%;
+    animation: rainbow-pulse 2s ease-in-out infinite;
+    color: #ffffff;
+    text-shadow: 2px 2px 0px #000000;
+    font-weight: bold;
+}
+
+.difficulty-button[data-difficulty="extreme"]:hover {
+    animation-duration: 1s;
+}
+
+@keyframes rainbow-pulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
             background: linear-gradient(45deg, #00d2d3, #54a0ff);
         }
         
@@ -364,7 +383,7 @@
     z-index: 10;
     font-size: 14px;
     padding: 20px 35px;
-    background: linear-gradient(45deg, #00d2d3, #54a0ff);
+    background: linear-gradient(45deg, #00b894, #55efc4);
     box-shadow: 0 8px 0 #2f3542;
     border-radius: 8px;
     text-shadow: 1px 1px 0px #000000;
@@ -600,29 +619,31 @@
         // 画像データ
         const gameImages = {
             characters: {
-                'たいよう': null,
-                'あきら': null,
-                'あるま': null,
-                'いおり': null,
-                'しゅうご': null,
-                'まほ': null,
-                'しづき': null,
-                'あさひ': null,
-                'しゅん': null,
-                'あつこ': null
-            },
-            characterSelect: {
-                'たいよう': null,
-                'あきら': null,
-                'あるま': null,
-                'いおり': null,
-                'しゅうご': null,
-                'まほ': null,
-                'しづき': null,
-                'あさひ': null,
-                'しゅん': null,
-                'あつこ': null
-            },
+    'たいよう': null,
+    'あきら': null,
+    'あるま': null,
+    'いおり': null,
+    'しゅうご': null,
+    'まほ': null,
+    'しづき': null,
+    'あさひ': null,
+    'しゅん': null,
+    'あつこ': null,
+    'ぺんぎん': null
+},
+characterSelect: {
+    'たいよう': null,
+    'あきら': null,
+    'あるま': null,
+    'いおり': null,
+    'しゅうご': null,
+    'まほ': null,
+    'しづき': null,
+    'あさひ': null,
+    'しゅん': null,
+    'あつこ': null,
+    'ぺんぎん': null
+},
             weapons: {
                 sword: null,
                 bow: null,
@@ -1395,8 +1416,8 @@
         }
 	// 全キャラクターリスト
         const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
-                               'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'りき', 'だいち'];
-
+                       'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'ぺんぎん', 'だいち'];
+		
         // キャラクター表示用エモジ
         const characterEmojis = {
             'たいよう': '☀️',
@@ -1409,7 +1430,7 @@
             'あさひ': '🌅',
             'しゅん': '🎋',
             'あつこ': '🌻',
-            'りき': '💪',
+            'ぺんぎん': '🐧',
             'だいち': '🌍'
         };
 
@@ -1723,7 +1744,7 @@ function getRandomCharacter() {
         setCharacterImage('あさひ', 'images/characters/asahi_small.png', 'images/characters/asahi_large.png');
         setCharacterImage('しゅん', 'images/characters/shun_small.png', 'images/characters/shun_large.png');
         setCharacterImage('あつこ', 'images/characters/atsuko_small.png', 'images/characters/atsuko_large.png');
-        setCharacterImage('りき', 'images/characters/riki_small.png', 'images/characters/riki_large.png');
+        setCharacterImage('ぺんぎん', 'images/characters/riki_small.png', 'images/characters/riki_large.png');
 		setCharacterImage('だいち', 'images/characters/daichi_small.png', 'images/characters/daichi_large.png');
         setEnemyImage('zombie', 'images/enemies/character_monster_zombie_02_green.png');
     </script>
