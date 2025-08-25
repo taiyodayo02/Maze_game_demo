@@ -194,16 +194,22 @@
         .difficulty-button.selected {
 			/* ヤバすぎヤバおボタン専用スタイル */
 .difficulty-button[data-difficulty="extreme"] {
-    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080);
-    background-size: 400% 400%;
-    animation: rainbow-pulse 2s ease-in-out infinite;
-    color: #ffffff;
-    text-shadow: 2px 2px 0px #000000;
-    font-weight: bold;
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080) !important;
+    background-size: 400% 400% !important;
+    animation: rainbow-pulse 2s ease-in-out infinite !important;
+    color: #ffffff !important;
+    text-shadow: 2px 2px 0px #000000 !important;
+    font-weight: bold !important;
 }
 
 .difficulty-button[data-difficulty="extreme"]:hover {
-    animation-duration: 1s;
+    animation-duration: 1s !important;
+}
+
+.difficulty-button[data-difficulty="extreme"].selected {
+    background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #80ff00, #00ff00, #00ff80, #00ffff, #0080ff, #0000ff, #8000ff, #ff00ff, #ff0080) !important;
+    background-size: 400% 400% !important;
+    animation: rainbow-pulse 1.5s ease-in-out infinite !important;
 }
 
 @keyframes rainbow-pulse {
@@ -407,6 +413,7 @@
     .title-start-button {
         font-size: 12px;
         padding: 15px 25px;
+        background: linear-gradient(45deg, #00b894, #55efc4) !important;
     }
 }
 		
@@ -418,17 +425,33 @@
         
         /* スマホ専用スタイル */
         @media (max-width: 600px) {
-            body {
-                padding: 5px;
-                min-height: 100vh;
-                overflow-x: hidden;
-            }
-            
-            .game-container {
-                max-width: 100%;
-                padding: 10px;
-                border-width: 2px;
-            }
+    body {
+        padding: 5px;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    
+    .game-container {
+        max-width: 100%;
+        padding: 10px;
+        border-width: 2px;
+        margin: 0;
+        width: calc(100% - 10px);
+        box-sizing: border-box;
+    }
+    
+    .character-select {
+        width: 100%;
+        max-width: calc(100vw - 40px);
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+    
+    .character-button {
+        min-width: 70px;
+        min-height: 90px;
+        flex-shrink: 0;
+    }
 
 			/* タイトル画面では枠を非表示 */
 .game-container:has(#title-screen.active) {
@@ -1483,7 +1506,7 @@ characterSelect: {
         }
 function getRandomCharacter() {
             const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
-                                   'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'りき'];
+                                   'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'ぺんぎん'];
             const locked = allCharacters.filter(char => !gameState.unlockedCharacters.includes(char));
             return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
         }
