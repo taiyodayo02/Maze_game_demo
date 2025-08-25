@@ -316,7 +316,49 @@
             transform: translateY(2px);
             box-shadow: 0 2px 0 #00a085;
         }
-        
+
+		/* タイトル画面用スタイル */
+.title-image-container {
+    margin: 20px 0 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-image {
+    max-width: 100%;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.title-start-button {
+    margin-top: 20px;
+    font-size: 12px;
+    padding: 15px 25px;
+    background: linear-gradient(45deg, #00d2d3, #54a0ff);
+    box-shadow: 0 6px 0 #2f3542;
+}
+
+.title-start-button:hover {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 #2f3542;
+}
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+    .title-image {
+        max-height: 150px;
+    }
+    
+    .title-start-button {
+        font-size: 11px;
+        padding: 12px 20px;
+    }
+}
+		
         .scroll-hint {
             font-size: 7px;
             color: #a4b0be;
@@ -363,14 +405,12 @@
 <body>
     <div class="game-container">
         <!-- タイトル画面 -->
-        <div id="title-screen" class="screen active">
-            <div class="title">🏰 ピクセル めいろゲーム 🏰</div>
-            <div style="margin: 20px 0; font-size: 10px; line-height: 1.4;">
-                めいろをクリアして<br>
-                つよい敵を倒そう！
-            </div>
-            <button class="button" onclick="showStageSelect()">ゲームスタート</button>
-        </div>
+<div id="title-screen" class="screen active">
+    <div class="title-image-container">
+        <img id="title-image" src="images/title/title_screen.png" alt="ピクセル あいあゲーム" class="title-image">
+    </div>
+    <button class="button title-start-button" onclick="showStageSelect()">ゲームスタート</button>
+</div>
         
         <!-- ステージ選択画面 -->
         <div id="stage-select" class="screen">
@@ -1631,3 +1671,4 @@ function getRandomCharacter() {
     </script>
 </body>
 </html>
+
