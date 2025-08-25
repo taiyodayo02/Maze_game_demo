@@ -374,36 +374,30 @@
 }
 
 .title-image-container {
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    height: 75%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
 }
 
 .title-image {
-    max-width: 90%;
-    max-height: 70%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
     display: block;
-    margin: 0 auto;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .title-start-button {
     position: relative;
-    z-index: 10;
+    z-index: 100;
     font-size: 14px;
     padding: 20px 35px;
     background: linear-gradient(45deg, #00b894, #55efc4);
@@ -425,46 +419,21 @@
     box-shadow: none;
 }
 
-/* PC専用スタイル */
+/* PC・タブレット専用スタイル */
 @media (min-width: 601px) {
-    .title-image {
-        max-width: 95%;
-        max-height: 80vh;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-    }
-    
     .title-start-button {
-        margin-top: 30px;
-        font-size: 16px;
+        font-size: 18px;
         padding: 25px 40px;
         position: relative;
         z-index: 10;
     }
-    
-    #title-screen.active {
-        padding: 10px;
-    }
 }
 
-/* タブレット対応 */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .title-image {
-        max-width: 90%;
-        max-height: 75vh;
-        width: auto;
-        height: auto;
-    }
-}
-
-/* デスクトップ対応 */
+/* デスクトップ専用 */
 @media (min-width: 1025px) {
-    .title-image {
-        max-width: 85%;
-        max-height: 75vh;
-        width: auto;
-        height: auto;
+    .title-start-button {
+        font-size: 20px;
+        padding: 30px 50px;
     }
 }
 		
