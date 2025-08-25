@@ -670,30 +670,20 @@
 
         // 画像データ
         const gameImages = {
-            characters: {
+           characters: {
     'たいよう': null,
     'あきら': null,
     'あるま': null,
-    'いおり': null,
     'しゅうご': null,
     'まほ': null,
-    'しづき': null,
-    'あさひ': null,
-    'しゅん': null,
-    'あつこ': null,
     'ぺんぎん': null
 },
 characterSelect: {
     'たいよう': null,
     'あきら': null,
     'あるま': null,
-    'いおり': null,
     'しゅうご': null,
     'まほ': null,
-    'しづき': null,
-    'あさひ': null,
-    'しゅん': null,
-    'あつこ': null,
     'ぺんぎん': null
 },
             weapons: {
@@ -1474,24 +1464,18 @@ if (playerImagePath && loadedImages[playerImagePath]) {
             }
         }
 	// 全キャラクターリスト
-        const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
-                       'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'ぺんぎん', 'だいち'];
+       const allCharacters = ['たいよう', 'あきら', 'あるま', 'しゅうご', 
+                       'まほ', 'ぺんぎん'];
 		
         // キャラクター表示用エモジ
         const characterEmojis = {
-            'たいよう': '☀️',
-            'あきら': '⭐',
-            'あるま': '🌸',
-            'いおり': '🌺',
-            'しゅうご': '🌊',
-            'まほ': '🌙',
-            'しづき': '🍀',
-            'あさひ': '🌅',
-            'しゅん': '🎋',
-            'あつこ': '🌻',
-            'ぺんぎん': '🐧',
-            'だいち': '🌍'
-        };
+    'たいよう': '☀️',
+    'あきら': '⭐',
+    'あるま': '🌸',
+    'しゅうご': '🌊',
+    'まほ': '🌙',
+    'ぺんぎん': '🐧'
+};
 
         // キャラクター選択画面のランダム表示
         function generateCharacterButtons() {
@@ -1541,11 +1525,11 @@ if (playerImagePath && loadedImages[playerImagePath]) {
             }
         }
 function getRandomCharacter() {
-            const allCharacters = ['たいよう', 'あきら', 'あるま', 'いおり', 'しゅうご', 
-                                   'まほ', 'しづき', 'あさひ', 'しゅん', 'あつこ', 'ぺんぎん'];
-            const locked = allCharacters.filter(char => !gameState.unlockedCharacters.includes(char));
-            return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
-        }
+    const allCharacters = ['たいよう', 'あきら', 'あるま', 'しゅうご', 
+                           'まほ', 'ぺんぎん'];
+    const locked = allCharacters.filter(char => !gameState.unlockedCharacters.includes(char));
+    return locked.length > 0 ? locked[Math.floor(Math.random() * locked.length)] : null;
+}
 
         // 敵の移動処理
         function moveEnemies() {
@@ -1796,17 +1780,11 @@ function getRandomCharacter() {
         setCharacterImage('たいよう', 'images/characters/taiyou_small.png', 'images/characters/taiyou_large.png');
 		setCharacterImage('あきら', 'images/characters/akira_small.png', 'images/characters/akira_large.png');
         setCharacterImage('あるま', 'images/characters/aruma_small.png', 'images/characters/aruma_large.png');
-        setCharacterImage('いおり', 'images/characters/iori_small.png', 'images/characters/iori_large.png');
         setCharacterImage('しゅうご', 'images/characters/shuugo_small.png', 'images/characters/shuugo_large.png');
         setCharacterImage('まほ', 'images/characters/maho_small.png', 'images/characters/maho_large.png');
-        setCharacterImage('しづき', 'images/characters/shizuki_small.png', 'images/characters/shizuki_large.png');
-        setCharacterImage('あさひ', 'images/characters/asahi_small.png', 'images/characters/asahi_large.png');
-        setCharacterImage('しゅん', 'images/characters/shun_small.png', 'images/characters/shun_large.png');
-        setCharacterImage('あつこ', 'images/characters/atsuko_small.png', 'images/characters/atsuko_large.png');
+		setCharacterImage('しゅうご', 'images/characters/shuugo_small.png', 'images/characters/shuugo_large.png');
         setCharacterImage('ぺんぎん', 'images/characters/riki_small.png', 'images/characters/riki_large.png');
-		setCharacterImage('だいち', 'images/characters/daichi_small.png', 'images/characters/daichi_large.png');
         setEnemyImage('zombie', 'images/enemies/character_monster_zombie_02_green.png');
     </script>
 </body>
 </html>
-
