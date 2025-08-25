@@ -375,10 +375,10 @@
 
 .title-image-container {
     position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 60%;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 75%;
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -428,35 +428,43 @@
 /* PC専用スタイル */
 @media (min-width: 601px) {
     .title-image {
-        max-width: 80%;
-        max-height: 60%;
+        max-width: 95%;
+        max-height: 80vh;
+        width: auto;
+        height: auto;
         object-fit: contain;
     }
     
     .title-start-button {
-        margin-top: 40px;
+        margin-top: 30px;
         font-size: 16px;
         padding: 25px 40px;
+        position: relative;
+        z-index: 10;
     }
     
     #title-screen.active {
-        padding: 20px;
+        padding: 10px;
     }
 }
 
 /* タブレット対応 */
 @media (min-width: 768px) and (max-width: 1024px) {
     .title-image {
-        max-width: 70%;
-        max-height: 50%;
+        max-width: 90%;
+        max-height: 75vh;
+        width: auto;
+        height: auto;
     }
 }
 
 /* デスクトップ対応 */
 @media (min-width: 1025px) {
     .title-image {
-        max-width: 60%;
-        max-height: 50%;
+        max-width: 85%;
+        max-height: 75vh;
+        width: auto;
+        height: auto;
     }
 }
 		
