@@ -1337,13 +1337,33 @@ characterSelect: {
                 ctx.fillText('👥', friend.x * cellSize + cellSize/2, friend.y * cellSize + cellSize/2 + 4);
             }
 
-            // プレイヤーを描画
-            const playerImagePath = gameImages.characters[gameState.selectedCharacter];
-            if (playerImagePath && loadedImages[playerImagePath]) {
-                ctx.drawImage(loadedImages[playerImagePath], player.x * cellSize, player.y * cellSize, cellSize, cellSize);
-            } else {
-                drawDefaultPlayer(cellSize);
-            }
+           // プレイヤーを描画
+const playerImagePath = gameImages.characters[gameState.selectedCharacter];
+if (playerImagePath && loadedImages[playerImagePath]) {
+    // 背景として白い円を描画
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.beginPath();
+    ctx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/2 + 2, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    // 画像を少し大きく、中央に配置
+    const imageSize = cellSize * 1.2;
+    const offset = (cellSize - imageSize) / 2;
+    ctx.drawImage(loadedImages[playerImagePath], 
+        player.x * cellSize + offset, 
+        player.y * cellSize + offset, 
+        imageSize, 
+        imageSize);
+        
+    // 枠線を追加
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2, cellSize/2 + 1, 0, 2 * Math.PI);
+    ctx.stroke();
+} else {
+    drawDefaultPlayer(cellSize);
+}
         }
         
         function drawDefaultTreasure(x, y, cellSize) {
@@ -1359,14 +1379,14 @@ characterSelect: {
         }
         
         function drawDefaultPlayer(cellSize) {
-            ctx.fillStyle = '#74b9ff';
-            ctx.fillRect(player.x * cellSize + 3, player.y * cellSize + 3, cellSize - 6, cellSize - 6);
-            
-            ctx.fillStyle = '#ffffff';
-            ctx.font = `${cellSize * 0.6}px monospace`;
-            ctx.textAlign = 'center';
-            ctx.fillText('😊', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2 + 4);
-        }
+    ctx.fillStyle = '#74b9ff';
+    ctx.fillRect(player.x * cellSize + 1, player.y * cellSize + 1, cellSize - 2, cellSize - 2);
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `${cellSize * 0.8}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('😊', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2 + 4);
+}
 
         function movePlayer(dx, dy) {
             if (!gameRunning) return;
