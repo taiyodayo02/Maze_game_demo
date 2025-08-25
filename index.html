@@ -318,17 +318,18 @@
         }
 
 		/* タイトル画面用スタイル - 全画面対応 */
-#title-screen {
-    position: relative;
-    overflow: hidden;
-    background: none;
-    border: none;
-    padding: 0;
+#title-screen.active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    background: #0f0f23;
 }
 
 .title-image-container {
@@ -349,7 +350,7 @@
 
 .title-start-button {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     font-size: 14px;
     padding: 20px 35px;
     background: linear-gradient(45deg, #00d2d3, #54a0ff);
@@ -357,11 +358,18 @@
     border-radius: 8px;
     text-shadow: 1px 1px 0px #000000;
     font-weight: bold;
+    cursor: pointer;
+    border: none;
 }
 
 .title-start-button:hover {
     transform: translateY(4px);
     box-shadow: 0 4px 0 #2f3542;
+}
+
+.title-start-button:active {
+    transform: translateY(8px);
+    box-shadow: none;
 }
 
 /* スマホ対応 */
@@ -393,13 +401,29 @@
             }
 
 			/* タイトル画面では枠を非表示 */
-#title-screen .game-container {
+.game-container:has(#title-screen.active) {
     background: transparent;
     border: none;
     padding: 0;
     max-width: 100%;
     width: 100%;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* 他の画面用のgame-container設定を復元 */
+.game-container:has(.screen.active:not(#title-screen)) {
+    background: #0f0f23;
+    border: 3px solid #00ff00;
+    padding: 15px;
+    max-width: 500px;
+    width: auto;
+    height: auto;
+    position: relative;
 }
             
             .title {
@@ -427,13 +451,13 @@
 </head>
 <body>
     <div class="game-container">
-       <!-- タイトル画面 -->
-<div id="title-screen" class="screen active">
-    <div class="title-image-container">
-        <img id="title-image" src="images/title/title_screen.png" alt="ピクセル あいあゲーム" class="title-image">
-    </div>
-    <button class="button title-start-button" onclick="showStageSelect()">ゲームスタート</button>
-</div>
+        <!-- タイトル画面 -->
+        <div id="title-screen" class="screen active">
+            <div class="title-image-container">
+                <img id="title-image" src="images/title/title_screen.png" alt="ピクセル めいろゲーム" class="title-image">
+            </div>
+            <button class="button title-start-button" onclick="showStageSelect()">ゲームスタート</button>
+        </div>
         
         <!-- ステージ選択画面 -->
         <div id="stage-select" class="screen">
